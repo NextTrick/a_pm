@@ -1,0 +1,181 @@
+{{extend 'layout.html'}}
+<h1>Reporte Administrativo</h1>
+{{
+total = 0
+total_completed = 0
+total_failed = 0
+total_minutes = 0
+total_cs_igv = 0
+total_css_igv = 0
+total_cd_igv = 0
+total_cds_igv = 0
+total_costo = 0
+}}
+<table border="1">
+    <tr>
+        <td>Fecha/Hora</td>
+{{if customer == 'True':}}
+        <td>Cliente</td>
+        <td>Tipo</td>
+        <td>Moneda</td>
+        <td>Impuesto</td>
+{{pass}}
+{{if provider == 'True':}}
+        <td>Proveedor</td>
+{{pass}}
+        <td>Llamadas</td>
+        <td>Respondidas</td>
+        <td>Falladas</td>
+        <td>Minutos</td>
+{{if ip_number == 'True':}}
+        <td>IP</td>
+{{pass}}
+{{if origin == 'True':}}
+        <td>Origen</td>
+{{pass}}
+{{if prefix == 'True':}}
+        <td>Prefijo</td>
+{{pass}}
+{{if destination == 'True':}}
+        <td>Destino</td>
+{{pass}}
+        <td>ASR</td>
+        <td>ACD</td>
+        <td>PDD</td>
+        <td>CS_IGV</td>
+        <td>CS_S_IGV</td>
+        <td>CD_IGV</td>
+        <td>CD_S_IGV</td>
+        <td>Costo Proveedor</td>
+        <td>Ganancia</td>
+        <td>Rentabilidad</td>
+    </tr>
+{{for line in data:}}
+<tr>
+        <td>{{=line[0]}}</td>
+{{if customer == 'True':}}
+        <td>{{=line[1]}}</td>
+        <td>{{=line[2]}}</td>
+        <td>{{=line[3]}}</td>
+        <td>{{=line[4]}}</td>
+{{pass}}
+{{if provider == 'True':}}
+        <td>{{=line[5]}}</td>
+{{pass}}
+{{total += int(line[6])}}
+{{total_completed += int(line[7])}}
+{{total_failed += int(line[8])}}
+        <td>{{=line[6]}}</td>
+        <td>{{=line[7]}}</td>
+        <td>{{=line[8]}}</td>
+{{
+try:
+    minutos = round(line[9],2)
+    total_minutes += minutos
+except:
+    minutos = 0
+pass
+}}
+        <td>{{=minutos}}</td>
+{{if ip_number == 'True':}}
+        <td>{{=line[10]}}</td>
+{{pass}}
+{{if origin == 'True':}}
+        <td>{{=line[11]}}</td>
+{{pass}}
+{{if prefix == 'True':}}
+        <td>{{=line[12]}}</td>
+{{pass}}
+{{if destination == 'True':}}
+        <td>{{=line[13]}}</td>
+{{pass}}
+{{
+try:
+    asr = round(line[14],2)
+    acd = round(line[15],2)
+    pdd = round(line[16],2)
+except:
+    asr = 0
+    acd = 0
+    pdd = 0
+pass
+try:
+    cs_igv = round(line[17],2)
+    css_igv = round(line[18],2)
+    total_cs_igv += cs_igv
+    total_css_igv += css_igv
+except:
+    cs_igv = 0
+    css_igv = 0
+pass
+try:
+    cd_igv = round(line[19],2)
+    cds_igv = round(line[20],2)
+    total_cd_igv += cd_igv
+    total_cds_igv += cds_igv
+except:
+    cd_igv = 0
+    cds_igv = 0
+pass
+try:
+    costo = round(line[21],2)
+    ganancia = round(line[22],2)
+    rentabilidad = round(line[23],2)
+    total_costo += costo
+except:
+    costo = 0
+    ganancia = 0
+    rentabilidad = 0
+pass
+}}
+        <td>{{=asr}}</td>
+        <td>{{=acd}}</td>
+        <td>{{=pdd}}</td>
+        <td>{{=cs_igv}}</td>
+        <td>{{=css_igv}}</td>
+        <td>{{=cd_igv}}</td>
+        <td>{{=cds_igv}}</td>
+        <td>{{=costo}}</td>
+        <td>{{=ganancia}}</td>
+        <td>{{=rentabilidad}}</td>
+</tr>
+{{pass}}
+    <tr>
+        <td></td>
+{{if customer == 'True':}}
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+{{pass}}
+{{if provider == 'True':}}
+        <td></td>
+{{pass}}
+        <td>{{=total}}</td>
+        <td>{{=total_completed}}</td>
+        <td>{{=total_failed}}</td>
+        <td>{{=total_minutes}}</td>
+{{if ip_number == 'True':}}
+        <td></td>
+{{pass}}
+{{if origin == 'True':}}
+        <td></td>
+{{pass}}
+{{if prefix == 'True':}}
+        <td></td>
+{{pass}}
+{{if destination == 'True':}}
+        <td></td>
+{{pass}}
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{=total_cs_igv}}</td>
+        <td>{{=total_css_igv}}</td>
+        <td>{{=total_cd_igv}}</td>
+        <td>{{=total_cds_igv}}</td>
+        <td>{{=total_costo}}</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>

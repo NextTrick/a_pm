@@ -1,0 +1,67 @@
+{{extend 'layout.html'}}
+
+<h1>Consolidado de Facturación Pre-Pago</h1>
+
+{{=form}}
+{{current_date = now.date()}}
+
+<td style="text-align:left;width: 50px">{{=A('Recargas', _href=URL('administrative', 'credits'))}}</td>
+
+<form action="prepaid_generate" method="post">
+<table>
+    <tr>
+        <td>Fecha Emisión:</td>
+        <td><input type="text" name="current_date" id="current_date" value='{{=current_date}}'></td>
+    </tr>
+</table>
+<table border="1">
+    <tr>
+        <td>Factura</td>
+        <td>Boleta</td>
+        <td>Razón Social</td>
+        <td>RUC</td>
+        <td>Fecha/Hora Recarga</td>
+        <td>Referencia</td>
+        <td>Moneda</td>
+        <td>Monto</td>
+        <td>Observaciones</td>
+    </tr>
+    {{for line in data:}}
+    <tr>
+        {{
+        reference = line.login_reference
+        if reference is not None:
+            description = u"Por Trafico de Llamadas"
+        else:
+            description = u"Recarga"
+        pass
+        customer = line.customer
+        customer_data = db.customers(db.customers.id==customer)
+        if customer_data is not None:
+            legal_name = customer_data.legal_name
+            tax_id = customer_data.tax_id
+        else:
+            legal_name = ''
+            tax_id = ''
+        pass
+        currency = line.currency
+        if currency is not None:
+            name_currency = name_data(db.currencies,currency,"name")
+        else:
+            name_currency = ''
+        pass
+        }}
+        <td style="text-align:right;width: 50px"><input type="checkbox" id="{{=line.id}}" name="factura" value="{{=line.id}}"></td>
+        <td style="text-align:right;width: 50px"><input type="checkbox" id="{{=line.id}}" name="boleta" value="{{=line.id}}"></td>
+        <td style="text-align:right;width: 50px">{{=legal_name}}</td>
+        <td style="text-align:right;width: 50px">{{=tax_id}}</td>
+        <td style="text-align:right;width: 50px">{{=line.status_time}}</td>
+        <td style="text-align:right;width: 50px">{{=line.login_reference}}</td>
+        <td style="text-align:right;width: 50px">{{=name_currency}}</td>
+        <td style="text-align:right;width: 50px">{{=line.amount}}</td>
+        <td style="text-align:right;width: 50px">{{=line.notes}}</td>
+    </tr>
+    {{pass}}
+</table>
+    <input type="submit" value="Generar"/>
+</form>

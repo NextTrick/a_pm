@@ -1,0 +1,43 @@
+{{extend 'layout.html'}}
+
+<h1>Lista de Servicios Contratados</h1>
+
+<table border="1">
+    <tr>
+        <td>Servicio</td>
+        <td>Cuenta</td>
+        {{if customer_type == 0:}}
+        <td>Saldo</td>
+        {{pass}}
+        <td>Fecha de Inicio</td>
+        <td>Moneda</td>
+        <td>Estado</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+{{for row in service_rows:}}
+<tr>
+        {{information = data_voip(row.id)}}
+        <td>{{=services_options[row.service]}}</td>
+        <td>{{=row.account}}</td>
+        {{if customer_type == 0:}}
+        <td>{{=information[5]}}</td>
+        {{pass}}
+        <td>{{=row.start_date}}</td>
+        <td><strong>{{=name_data(db.currencies,row.currency)}}</strong></td>
+        <td>{{=status_options[row.status]}}</td>
+{{if row.service==1 or row.service==2:}}
+        <td>{{=A('Graficas', _href=URL('services', 'graphical_reports', vars=dict(customer_service=row.account, currency=row.currency)))}}</td>
+        <td>{{=A('Tarifas', _href=URL('services', 'retail_rates', vars=dict(customer_service=row.id, currency=row.currency)))}}</td>
+        <td>{{=A('CDR', _href=URL('services', 'retail_cdr', vars=dict(customer_service=row.id)))}}</td>
+        <td>{{=A('Reportes', _href=URL('reports', 'voip_reports', vars=dict(customer_service=row.id)))}}</td>
+{{else:}}
+        <td></td>
+        <td></td>
+        <td></td>
+{{pass}}
+</tr>
+{{pass}}
+</table>

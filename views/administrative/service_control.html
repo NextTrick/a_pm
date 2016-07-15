@@ -1,0 +1,47 @@
+{{extend 'layout.html'}}
+
+<h1>Control de Servicios</h1>
+
+{{=form}}
+
+<table border="1">
+    <tr>
+        <td>Cliente</td>
+        <td>Servicio</td>
+        <td>Cuenta</td>
+        <td>Ultima Factura</td>
+        <td>Nueva Factura</td>
+        <td>Días Faltantes</td>
+        <td></td>
+    </tr>
+{{for line in data:}}
+<tr>
+        <td style="text-align:left">{{=line[1]}}</td>
+        <td style="text-align:left">{{=services_options[int(line[2])]}}</td>
+        <td style="text-align:left">{{=line[3]}}</td>
+        {{if line[4] is None:}}
+        <td style="text-align:left"></td>
+        {{else:}}
+        <td style="text-align:left">{{=line[4]}}</td>
+        {{pass}}
+        {{if line[6] is None:}}
+        <td style="text-align:left"></td>
+        {{else:}}
+        <td style="text-align:left">{{=line[6]}}</td>
+        {{pass}}
+        {{if line[7] is None:}}
+        <td style="text-align:left"></td>
+        {{else:}}
+        <td style="text-align:right"><strong>{{=line[7]}}</strong></td>
+        {{pass}}
+        {{if line[9] == 1 and line[5] is not None:
+        start_time = line[5]
+        end_time = line[6]
+        }}
+        <td style="text-align:left;width: 50px">{{=A('Facturar', _href=URL('administrative', 'invoice', vars=dict(customer=line[8],service=line[2],start_time=start_time, end_time=end_time, origin='service_control')))}}</td>
+        {{else:}}
+        <td>Se requiere factura de referencia</td>
+        {{pass}}
+</tr>
+{{pass}}
+</table>

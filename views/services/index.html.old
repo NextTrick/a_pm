@@ -1,0 +1,143 @@
+{{extend 'layout.html'}}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(Consumo);
+      google.setOnLoadCallback(Minutos);
+      google.setOnLoadCallback(Llamadas);
+      function Consumo() {
+        var data = google.visualization.arrayToDataTable(
+            {{=XML(consumo)}}
+        );
+
+        var options = {
+          title: 'Consumo',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('consumo'));
+        chart.draw(data, options);
+      }
+      function Minutos() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(minutos)}}
+        );
+
+        var options = {
+          title: 'Minutos',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('minutos'));
+        chart.draw(data, options);
+      }
+      function Llamadas() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(llamadas)}}
+        );
+
+        var options = {
+          title: 'Llamadas',
+          series: [{color: 'blue', lineWidth: 1}, {color: 'orange', lineWidth: 1}, {color: 'red', lineWidth: 1}],
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('llamadas'));
+        chart.draw(data, options);
+      }
+</script>
+<h1>Cliente:{{=data.name}}</h1>
+<table border="1">
+<tr>
+    <td>Tipo de Cuenta</td><td>{{=account_types[data.account_type]}}</td>
+</tr>
+<tr>
+    <td>Moneda</td><td>{{=name_data(db.currencies, data.currency)}}</td>
+</tr>
+<tr>
+    <td>Impuesto</td><td>
+{{if data.tax is True:}}
+    18%
+{{else:}}
+    0%
+{{pass}}
+</td>
+</tr>
+</table>
+<br>
+
+<table>
+<tr>
+    <td>
+        <div id="costo" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="consumo" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="minutos" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="llamadas" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="ganancia" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="rentabilidad" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+</table>
+
+{{if data.account_type == 0:}}
+<h2>Recargas</h2>
+<table border="1">
+<tr>
+    <td>Tiempo</td>
+    <td>Moneda</td>
+    <td>Monto</td>
+    <td>Monto Cliente</td>
+    <td>Observaciones</td>
+</tr>
+{{for line in credits:}}
+<tr>
+    <td align="left">{{=line.register_time}}</td>
+    <td align="left">{{=name_data(db.currencies,line.currency)}}</td>
+    <td align="left">{{=line.amount}}</td>
+    <td align="left">{{=line.customer_amount}}</td>
+    <td align="left">{{=line.notes}}</td>
+</tr>
+{{pass}}
+</table>
+{{pass}}
+<br>
+
+
+<h2>Servicios Contratados</h2>
+<table border="1">
+    <tr>
+        <td>Servicio</td>
+        <td>Paquete</td>
+        <td>Fecha</td>
+        <td>Ciclo</td>
+        <td>Estado</td>
+        <td>Cuenta</td>
+    </tr>
+{{for service in services:}}
+<tr>
+    <td>{{=services_options[service.service]}}</td>
+    <td>{{=name_data(db.packages, service.package)}}</td>
+    <td>{{=service.start_date}}</td>
+    <td>{{=name_data(db.billing_periods, service.billing_period)}}</td>
+    <td>{{=status_options[service.status]}}</td>
+    <td>{{=service.account}}</td>
+</tr>
+{{pass}}
+</table>
+

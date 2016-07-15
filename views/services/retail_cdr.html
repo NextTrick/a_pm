@@ -1,0 +1,39 @@
+{{extend 'layout.html'}}
+
+<h1>VOIP - CDR</h1>
+
+<table border="1">
+    <tr>
+<td>Diario</td><td>Semanal</td><td>Quincenal</td><td>Mensual</td>
+    </tr>
+{{for iter in range(0,7):}}
+<tr>
+<td>{{=daily[iter][0]}}{{=A('ok', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=daily[iter][0], end_date=daily[iter][1], kind=1)))}}
+    {{=A('failed', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=daily[iter][0], end_date=daily[iter][1], kind=2)))}}</td>
+{{if iter<4:}}
+    {{title='%s-%s' % (weekly[iter][0],weekly[iter][1])}}
+<td>{{=title}}{{=A('ok', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=weekly[iter][0], end_date=weekly[iter][1], kind=1)))}}
+    {{=A('failed', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=weekly[iter][0], end_date=weekly[iter][1], kind=2)))}}</td>
+{{pass}}
+{{if iter<4:}}
+    {{title='%s-%s' % (half_monthly[iter][0],half_monthly[iter][1])}}
+<td>{{=title}}{{=A('ok', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=half_monthly[iter][0], end_date=half_monthly[iter][1], kind=1)))}}
+    {{=A('failed', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=half_monthly[iter][0], end_date=half_monthly[iter][1], kind=2)))}}</td>
+{{pass}}
+{{if iter<3:}}
+    {{title='%s-%s' % (monthly[iter][0],monthly[iter][1])}}
+<td>{{=title}}{{=A('ok', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=monthly[iter][0], end_date=monthly[iter][1], kind=1)))}}
+    {{=A('failed', _href=URL('services', 'export_data',
+    vars=dict(customer_service=customer_service, start_date=monthly[iter][0], end_date=monthly[iter][1], kind=2)))}}</td>
+{{pass}}
+    </tr>
+{{pass}}
+
+</table>

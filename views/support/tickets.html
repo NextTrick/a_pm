@@ -1,0 +1,34 @@
+{{extend 'layout.html'}}
+
+<h1>Tickets</h1><br>
+
+{{=A(T('New Ticket'), _href=URL('support', 'ticket_new'))}}<br>
+
+<table border="1">
+    <tr>
+        <td>Codigo</td>
+        <td>Area</td>
+        <td>Usuario</td>
+        <td>Prioridad</td>
+        <td>Tema</td>
+        <td>Estado</td>
+        <td>Empresa</td>
+    </tr>
+{{for line in data:}}
+    <tr>
+{{if line.status == 0:}}
+        <td>{{=A(line.id, _href=URL('support', 'ticket_thread?ticket=%s' % (line.id)))}}</td>
+{{else:}}
+        <td>{{=line.id}}</td>
+{{pass}}
+        <td>{{=name_data(db.areas, line.area)}}</td>
+        <td>{{=name_data(db.auth_user, line.user_req, field='email')}}</td>
+        <td>{{=priority_options[line.priority]}}</td>
+        <td>{{=line.brief}}</td>
+        <td>{{=status_tickets[line.status]}}</td>
+{{if role=='root':}}
+<td>{{=name_data(db.customers, line.customer)}}</td>
+{{pass}}
+    </tr>
+{{pass}}
+</table>

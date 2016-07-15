@@ -1,0 +1,9 @@
+{{extend 'layout.html'}}
+<h1>Perfil</h1>
+{{=customer}}
+{{=customer_contacts}}
+{{=customer_addresses}}
+<h3>{{=customer.legal_name}}</h3>
+{{for line in customer_contacts:}}
+        <h4>{{=line.customers_contacts.area}}</h4>
+{{pass}}

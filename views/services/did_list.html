@@ -1,0 +1,36 @@
+{{extend 'layout.html'}}
+
+<h1>DID - Lista de Servicios Contratados</h1>
+
+<table border="1">
+    <tr>
+        <td>Contrato</td>
+        <td>Paquete</td>
+        <td>Fecha de Inicio</td>
+        <td>Ciclo</td>
+        <td>Host</td>
+        <td>Port</td>
+        <td>Cuenta</td>
+        <td>Clave</td>
+        <td>DID</td>
+        <td>Moneda</td>
+        <td>Costo</td>
+        <td>Estado</td>
+    </tr>
+{{for row in did_rows:}}
+<tr>
+        <td>{{=row.customer_contract}}</td>
+        <td>{{=name_data(db.packages,row.package)}}</td>
+        <td>{{=row.start_date}}</td>
+        <td>{{=name_data(db.billing_periods, row.billing_period)}}</td>
+        <td>{{=row.server_host}}</td>
+        <td>{{=row.server_port}}</td>
+        <td>{{=row.account}}</td>
+        <td>{{=row.password}}</td>
+        <td><strong>{{=row.did}}</strong></td>
+        <td><strong>{{=name_data(db.currencies,row.currency)}}</strong></td>
+        <td><strong>{{=row.monthly}}</strong></td>
+        <td>{{=status_options[row.status]}}</td>
+</tr>
+{{pass}}
+</table>

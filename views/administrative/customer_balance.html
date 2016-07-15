@@ -1,0 +1,53 @@
+{{extend 'layout.html'}}
+
+<h1>Facturas Pendientes</h1>
+
+<script>
+jQuery(function() {
+   jQuery("#process").click(function(){
+      if (confirm("Click OK to continue?")){
+         $('form#customer_balance').submit();
+      }
+   });
+});
+</script>
+
+{{=form}}
+
+<form id="customer_balance" action="process_payment_list" method="post">
+<table border="1">
+    <tr>
+        <td>Documento</td>
+        <td>Número</td>
+        <td>Emisión</td>
+        <td>Vencimiento</td>
+        <td>Cliente</td>
+        <td>RUC</td>
+        <td>Periodo</td>
+        <td>Moneda</td>
+        <td>Importe</td>
+        <td>Saldo Importe</td>
+        <td>Detracción</td>
+        <td>Saldo Detracción</td>
+        <td>Fecha Entrega</td>
+        <td>Fecha Estado</td>
+        <td>Estado</td>
+        <td>Tipo Cliente</td>
+        <td>Anular</td>
+        <td>Pagado</td>
+    </tr>
+    {{for key in data:}}
+    <tr>
+        {{for elem in data[key]:}}
+        <td>{{=elem}}</td>
+        {{pass}}
+        <td><input type="checkbox" id="void_{{=key}}" name="void" value="{{=key}}"></td>
+        <td><input type="checkbox" id="paid_{{=key}}" name="paid" value="{{=key}}"></td>
+        <td style="text-align:left;width: 50px">{{=A('Notificar', _href=URL('administrative', 'pre_notify', vars=dict(invoice=key,customer=customer)))}}</td>
+        <td style="text-align:left;width: 50px">{{=A('Alertar', _href=URL('administrative', 'post_notify', vars=dict(invoice=key, customer=customer)))}}</td>
+    </tr>
+    {{pass}}
+</table>
+<input id="process" type="button" value="Procesar"/>
+</form>
+{{=A(T('Download CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}

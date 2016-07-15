@@ -1,0 +1,20 @@
+{{extend 'layout.html'}}
+
+<h1>DID - Lista de Tarifas</h1>
+
+<table border="1">
+    <tr>
+        <td>Destino</td>
+        <td>Moneda</td>
+        <td>Instalación</td>
+        <td>Costo Mensual</td>
+    </tr>
+{{for row in did_rows:}}
+<tr>
+        <td>{{=row.name}}</td>
+        <td><strong>{{=name_data(db.currencies,row.currency)}}</strong></td>
+        <td>{{=row.setup_fee}}</td>
+        <td>{{=row.monthly_fee}}</td>
+</tr>
+{{pass}}
+</table>

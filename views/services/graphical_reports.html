@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(Consumo);
+      google.setOnLoadCallback(Minutos);
+      google.setOnLoadCallback(Llamadas);
+      function Consumo() {
+        var data = google.visualization.arrayToDataTable(
+            {{=XML(consumo)}}
+        );
+
+        var options = {
+          title: 'Consumo',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('consumo'));
+        chart.draw(data, options);
+      }
+      function Minutos() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(minutos)}}
+        );
+
+        var options = {
+          title: 'Minutos',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('minutos'));
+        chart.draw(data, options);
+      }
+      function Llamadas() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(llamadas)}}
+        );
+
+        var options = {
+          title: 'Llamadas',
+          series: [{color: 'blue', lineWidth: 1}, {color: 'orange', lineWidth: 1}, {color: 'red', lineWidth: 1}],
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('llamadas'));
+        chart.draw(data, options);
+      }
+</script>
+<h1>Cliente:{{=data.name}}</h1>
+
+<table>
+<tr>
+    <td>
+        <div id="consumo" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="minutos" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="llamadas" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+</table>
+
+

@@ -1,0 +1,34 @@
+{{extend 'layout.html'}}
+
+<h1>VOIP - Lista de Servicios Contratados</h1>
+
+<table border="1">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Contrato</td>
+        <td>Paquete</td>
+        <td>Fecha de Inicio</td>
+        <td>Ciclo</td>
+        <td>Cuenta</td>
+        <td>Clave</td>
+        <td>Moneda</td>
+        <td>Estado</td>
+    </tr>
+{{for row in voip_rows:}}
+<tr>
+        <td>{{=A('Tarifas', _href=URL('services', 'retail_rates', vars=dict(customer_service=row.id, currency=row.currency)))}}</td>
+        <td>{{=A('CDR', _href=URL('services', 'retail_cdr', vars=dict(customer_service=row.id)))}}</td>
+        <td>{{=A('Reportes', _href=URL('reports', 'voip_reports', vars=dict(customer_service=row.id)))}}</td>
+        <td>{{=row.customer_contract}}</td>
+        <td>{{=name_data(db.packages,row.package)}}</td>
+        <td>{{=row.start_date}}</td>
+        <td>{{=name_data(db.billing_periods, row.billing_period)}}</td>
+        <td>{{=row.account}}</td>
+        <td>{{=row.password}}</td>
+        <td><strong>{{=name_data(db.currencies,row.currency)}}</strong></td>
+        <td>{{=status_options[row.status]}}</td>
+</tr>
+{{pass}}
+</table>

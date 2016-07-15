@@ -1,0 +1,198 @@
+{{extend 'layout.html'}}
+{{
+minutes = 0
+amount = 0
+total_minutes = 0
+total_amount = 0
+total_discount = 0
+gran_total = 0
+}}
+<script>
+jQuery(document).ready(function(){
+    var total_discount = 0;
+    function sum_total(){
+        var full_total = 0;
+        {{for line in data['data']:}}
+            {{account = line[6]}}
+        if ($('#{{=account}}').is(':checked')) {
+            {{sub_total_id = "sub_total_%s" % account}}
+            sub_total = jQuery("#{{=sub_total_id}}").prop("value");
+            sub_total = parseFloat(sub_total);
+            full_total += sub_total;
+        }
+        {{pass}}
+        jQuery("#gran_total").val(full_total);
+    }
+    function sum_sub_total(){
+        var total_amount = 0;
+        {{for line in data['data']:}}
+            {{account = line[6]}}
+        if ($('#{{=account}}').is(':checked')) {
+            {{amount_id = "amount_%s" % account}}
+            sub_total = jQuery("#{{=amount_id}}").prop("value");
+            sub_total = parseFloat(sub_total);
+            total_amount += sub_total;
+        }
+        {{pass}}
+        jQuery("#total_amount").val(total_amount);
+    }
+{{for line in data['data']:}}
+    {{account = line[6]}}
+    {{discount_id = "discount_%s" % account}}
+    {{amount_id = "amount_%s" % account}}
+    {{sub_total_id = "sub_total_%s" % account}}
+    jQuery("#{{=discount_id}}").change(function(){
+        discount = jQuery("#{{=discount_id}}").prop("value");
+        amount = jQuery("#{{=amount_id}}").prop("value");
+        discount = parseFloat(discount);
+        amount = parseFloat(amount);
+        if(discount >= amount){
+            discount = 0;
+        }
+        sub_total = amount - discount;
+        total_discount += discount;
+        jQuery("#{{=sub_total_id}}").val(sub_total.toFixed(2));
+        jQuery("#total_discount").val(total_discount);
+        sum_total();
+    });
+    jQuery("#{{=amount_id}}").change(function(){
+        discount = jQuery("#{{=discount_id}}").prop("value");
+        amount = jQuery("#{{=amount_id}}").prop("value");
+        discount = parseFloat(discount);
+        amount = parseFloat(amount);
+        if(discount >= amount){
+            discount = 0;
+        }
+        sub_total = amount - discount;
+        total_discount += discount;
+        jQuery("#{{=sub_total_id}}").val(sub_total.toFixed(2));
+        jQuery("#total_discount").val(total_discount);
+        sum_sub_total();
+        sum_total();
+    });
+    jQuery("#{{=account}}").change(function(){
+        sum_total();
+    });
+{{pass}}
+    sum_total();
+});
+</script>
+
+<h1>Factura</h1>
+{{
+new_start_time = "%s/%s/%s" % (start_time[-2:], start_time[5:7], start_time[:4])
+new_end_time = "%s/%s/%s" % (end_time[-2:], end_time[5:7], end_time[:4])
+current_date = now.date()
+counter = 0
+}}
+{{if origin != 'service_control':}}
+{{=A('Regresar a Facturación', _href=URL('administrative', 'post_paid_billing', vars=dict(start_time=new_start_time, end_time=new_end_time)))}}
+{{else:}}
+{{=A('Regresar a Facturación', _href=URL('administrative', 'service_control', vars=dict(start_time=new_start_time, end_time=new_end_time)))}}
+{{pass}}
+
+<form action="generate" method="post">
+<table>
+    <tr>
+    <td>Fecha: <input type="text" name="current_date" id="current_date" value='{{=current_date}}'></td>
+    <td>Dirección:
+        <select name="address" id="address">
+        {{for row in customers_addresses:}}
+        <option value="{{=row}}"
+        {{if counter == 0:}}
+                selected
+        {{pass}}
+                >{{=customers_addresses[row]}}</option>
+        {{ counter += 1}}
+        {{pass}}
+</select>
+
+    </td>
+    </tr>
+</table>
+<table border="1">
+    <tr>
+        <td>Nombre Comercial</td>
+        <td>Nombre Legal</td>
+        <td>RUC</td>
+        <td>Medio de Pago</td>
+        <td>Servicio</td>
+        <td>Ciclo</td>
+        <td>Moneda</td>
+    </tr>
+    <tr>
+        {{name_currency = name_data(db.currencies, data['currency'])}}
+        <td>{{=data['name']}}</td>
+        <td>{{=data['legal_name']}}</td>
+        <td>{{=data['tax_id']}}</td>
+        <td>{{=name_data(db.payment_means, data['payment_mean'])}}</td>
+        <td>{{=services_options[data['service']]}}</td>
+        <td>{{=name_data(db.billing_periods, data['billing_period'])}}</td>
+        <td>{{=name_currency}}</td>
+    <input type="hidden" name="legal_name" id="legal_name" value='{{=data['legal_name']}}'></td>
+    <input type="hidden" name="tax_id" id="tax_id" value='{{=data['tax_id']}}'></td>
+    <input type="hidden" name="currency" id="currency" value='{{=data['currency']}}'></td>
+    <input type="hidden" name="tax" id="tax" value='{{=data['tax']}}'></td>
+    <input type="hidden" name="document_type" id="document_type" value='{{=data['document_type']}}'></td>
+    <input type="hidden" name="kind" id="kind" value='{{=data['service']}}'></td>
+    <input type="hidden" name="start_time" id="start_time" value='{{=start_time}}'></td>
+    <input type="hidden" name="end_time" id="end_time" value='{{=end_time}}'></td>
+    <input type="hidden" name="name_currency" id="name_currency" value='{{=name_currency}}'></td>
+    </tr>
+</table>
+
+<table border="1">
+    <tr>
+        <td></td>
+        <td>Cuenta</td>
+        <td>Instalación</td>
+        <td>Mensual</td>
+        <td>Minutos</td>
+        <td>Moneda</td>
+        <td>Monto</td>
+        <td>Descuento</td>
+        <td>Sub-Total</td>
+    </tr>
+    {{for line in data['data']:}}
+    <tr>
+        {{
+        account = line[6]
+        minutes = round(line[4],2)
+        amount = round(line[5],2)
+        install = round(line[2], 2)
+        monthly = round(line[3], 2)
+        amount += install
+        amount += monthly
+        total_minutes += round(minutes,2)
+        total_amount += round(amount, 2)
+        }}
+        <td><input type="checkbox" id="{{=account}}" name="service" value="{{=account}}" checked></td>
+        <td>{{=line[0]}}</td>
+        <input type="hidden" name="account_{{=account}}" id="account_{{=account}}" value='{{=line[0]}}'></td>
+        <td>{{=line[2]}}</td>
+        <td>{{=line[3]}}</td>
+        <td><input type="text" style="text-align:right;width: 50px" name="minutes_{{=account}}" id="minutes_{{=account}}" value="{{=minutes}}" size="10" readonly></td>
+        <td>{{=name_data(db.currencies,line[1])}}</td>
+        <td><input type="text" style="text-align:right;width: 50px" name="amount_{{=account}}" id="amount_{{=account}}" value="{{=amount}}" size="10"></td>
+        <td><input type="text" style="text-align:right;width: 50px" name="discount_{{=account}}" id="discount_{{=account}}" value="0" size="10"></td>
+        <td><input type="text" style="text-align:right;width: 50px" name="sub_total_{{=account}}" id="sub_total_{{=account}}" value="{{=amount}}" size="10" readonly></td>
+    </tr>
+    {{pass}}
+    <tr>
+
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" style="text-align:right;width: 50px" name="total_minutes" id="total_minutes" value="{{=total_minutes}}" size="10" readonly></td>
+        <td>{{=name_data(db.currencies,line[1])}}</td>
+        <td><input type="text" style="text-align:right;width: 50px" id="total_amount" name="total_amount" value="{{=total_amount}}" size="10" readonly></td>
+        <td><input type="text" style="text-align:right;width: 50px" id="total_discount" name="total_discount" value="{{=total_discount}}" size="10" readonly></td>
+        <td><input type="text" style="text-align:right;width: 50px" name="gran_total" id="gran_total" size="10" readonly></td>
+
+    </tr>
+</table>
+    Observaciones: <input type="text" style="text-align:left;width: 400px" name="notes" id="notes" size="10"><br/>
+    <input type="hidden" name="customer" id="customer" value='{{=data['id']}}'></td>
+    <input type="submit" value="Generar"/>
+</form>

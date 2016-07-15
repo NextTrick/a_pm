@@ -1,0 +1,189 @@
+{{extend 'new_layout.html'}}
+                <div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+{{import decimal}}
+<h1>VOIP - Reporte Administrativo</h1>
+{{=form.custom.begin}}
+<table width="100%">
+    <tr>
+        <td style="text-align:right;width: 50px">Cliente: {{=form.custom.widget.customer}}</td>
+        <td style="text-align:right;width: 50px">{{=form.custom.widget.customer_name}}</td>
+        <td style="text-align:right;width: 50px">Inicio {{=form.custom.widget.from_date}}</td>
+        <td style="text-align:right;width: 50px">{{=form.custom.widget.from_hour}}</td>
+
+    </tr>
+    <tr>
+        <td style="text-align:right;width: 50px">Proveedor: {{=form.custom.widget.provider}}</td>
+        <td style="text-align:right;width: 50px">{{=form.custom.widget.provider_name}}</td>
+        <td style="text-align:right;width: 50px">Fin: {{=form.custom.widget.to_date}}</td>
+        <td style="text-align:right;width: 50px">{{=form.custom.widget.to_hour}}</td>
+
+    </tr>
+    <tr>
+        <td style="text-align:right;width: 50px">Destino: {{=form.custom.widget.destination}}</td>
+        <td style="text-align:right;width: 50px">{{=form.custom.widget.destination_name}}</td>
+    </tr>
+    <tr>
+        <td style="text-align:right;width: 50px">Servidor {{=form.custom.widget.server}}</td>
+        <td style="text-align:right;width: 50px">Agrupamiento {{=form.custom.widget.group}}</td>
+        <td style="text-align:right;width: 50px">IP{{=form.custom.widget.ip_number}} Origen{{=form.custom.widget.origin}} Prefijo{{=form.custom.widget.prefix}}</td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{=form.custom.submit}}</td>
+    </tr>
+</table>
+{{=form.custom.end}}
+{{
+total_calls = decimal.Decimal(0)
+total_completed = decimal.Decimal(0)
+total_failed = decimal.Decimal(0)
+total_minutes = decimal.Decimal(0)
+total_cs_igv = decimal.Decimal(0)
+total_css_igv = decimal.Decimal(0)
+total_cd_igv = decimal.Decimal(0)
+total_cds_igv = decimal.Decimal(0)
+total_costo = decimal.Decimal(0)
+total_asr = decimal.Decimal(0)
+total_acd = decimal.Decimal(0)
+total_pdd = decimal.Decimal(0)
+total_ganancia = decimal.Decimal(0)
+total_rentabilidad = decimal.Decimal(0)
+}}
+{{if len(data)>0:}}
+{{=A(T('Download CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}
+{{pass}}
+{{if len(data)>0 and len(data)<100:}}
+<table border="1">
+    <tr>
+        <td>Fecha/Hora</td>
+{{if customer:}}
+        <td>Cliente</td>
+        <td>Tipo</td>
+        <td>Moneda</td>
+        <td>Impuesto</td>
+{{pass}}
+{{if provider:}}
+        <td>Proveedor</td>
+{{pass}}
+        <td>Intentos</td>
+        <td>Completados</td>
+        <td>Fallados</td>
+        <td>Minutos</td>
+{{if ip_number:}}
+        <td>IP</td>
+{{pass}}
+{{if origin:}}
+        <td>Origen</td>
+{{pass}}
+{{if prefix:}}
+        <td>Prefijo</td>
+{{pass}}
+{{if destination:}}
+        <td>Destino</td>
+{{pass}}
+        <td>ASR</td>
+        <td>ACD</td>
+        <td>PDD</td>
+        <td>CS_IGV</td>
+        <td>CS_SIGV</td>
+        <td>CD_IGV</td>
+        <td>CD_SIGV</td>
+        <td>Costo</td>
+        <td>Ganancia</td>
+        <td>Rentabilidad</td>
+    </tr>
+{{for line in data:}}
+<tr>
+{{for row in line:}}
+    <td>{{=row}}</td>
+{{pass}}
+{{
+if customer:
+    if provider:
+        total_calls += decimal.Decimal(line[6])
+        total_completed += decimal.Decimal(line[7])
+        total_failed += decimal.Decimal(line[8])
+        total_minutes += decimal.Decimal(line[9])
+    else:
+        total_calls += decimal.Decimal(line[5])
+        total_completed += decimal.Decimal(line[6])
+        total_failed += decimal.Decimal(line[7])
+        total_minutes += decimal.Decimal(line[8])
+    pass
+else:
+    if provider:
+        total_calls += decimal.Decimal(line[2])
+        total_completed += decimal.Decimal(line[3])
+        total_failed += decimal.Decimal(line[4])
+        total_minutes += decimal.Decimal(line[5])
+    else:
+        total_calls += decimal.Decimal(line[1])
+        total_completed += decimal.Decimal(line[2])
+        total_failed += decimal.Decimal(line[3])
+        total_minutes += decimal.Decimal(line[4])
+    pass
+pass
+}}
+{{
+total_cs_igv += decimal.Decimal(line[-7])
+total_css_igv += decimal.Decimal(line[-6])
+total_cd_igv += decimal.Decimal(line[-5])
+total_cds_igv += decimal.Decimal(line[-4])
+total_costo += decimal.Decimal(line[-3])
+}}
+</tr>
+{{pass}}
+    <tr>
+        <td></td>
+{{if customer:}}
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+{{pass}}
+{{if provider:}}
+        <td></td>
+{{pass}}
+        <td>{{=total_calls}}</td>
+        <td>{{=total_completed}}</td>
+        <td>{{=total_failed}}</td>
+        <td>{{=total_minutes}}</td>
+{{if ip_number:}}
+        <td></td>
+{{pass}}
+{{if origin:}}
+        <td></td>
+{{pass}}
+{{if prefix:}}
+        <td></td>
+{{pass}}
+{{if destination:}}
+        <td></td>
+{{pass}}
+{{
+total_asr = round(decimal.Decimal(100) * total_completed/(total_completed+total_failed),2)
+total_acd = round(total_minutes / total_completed,2)
+total_pdd = 0
+total_ganancia = round(total_cds_igv - total_costo,2)
+total_rentabilidad =  round((total_cds_igv - total_costo) / total_costo * decimal.Decimal(100), 2)
+}}
+        <td>{{=total_asr}}</td>
+        <td>{{=total_acd}}</td>
+        <td>{{=total_pdd}}</td>
+        <td>{{=total_cs_igv}}</td>
+        <td>{{=total_css_igv}}</td>
+        <td>{{=total_cd_igv}}</td>
+        <td>{{=total_cds_igv}}</td>
+        <td>{{=total_costo}}</td>
+        <td>{{=total_ganancia}}</td>
+        <td>{{=total_rentabilidad}}</td>
+    </tr>
+</table>
+{{pass}}
+                                            </div>
+    </div>
+</div>

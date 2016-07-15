@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+
+<h1>Seguimiento</h1><br>
+
+{{if service is not None:}}
+<h3>Servicio: {{=services_options[service]}}</h3>
+{{pass}}
+
+
+{{=form}}
+
+{{=ticket_grid}}
+
+{{=grid}}

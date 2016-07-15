@@ -1,0 +1,64 @@
+{{extend 'layout.html'}}
+<h1>VOIP - CDRs</h1>
+{{import types}}
+
+{{=form.custom.begin}}
+<table width="100%">
+    <tr>
+        <td>Cliente: {{=form.custom.widget.customer}}{{=form.custom.widget.customer_name}}</td>
+        <td width="70%">Inicio {{=form.custom.widget.from_date}}{{=form.custom.widget.from_hour}}</td>
+    </tr>
+    <tr>
+        <td>Proveedor: {{=form.custom.widget.provider}}{{=form.custom.widget.provider_name}}</td>
+        <td>Fin: {{=form.custom.widget.to_date}}{{=form.custom.widget.to_hour}}</td>
+    </tr>
+    <tr>
+        <td>No Destino {{=form.custom.widget.called_number}} Razón {{=form.custom.widget.release_reason}}</td>
+        <td>Servidor: {{=form.custom.widget.server}} {{=form.custom.widget.group}}</td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{=form.custom.submit}}</td>
+    </tr>
+</table>
+{{=form.custom.end}}
+<table border="1">
+{{if len(data)>0:}}
+{{=A(T('Download CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}
+{{pass}}
+{{if len(data)>0 and len(data)<100:}}
+<tr>
+{{if customer:}}
+    <td>Login</td>
+{{pass}}
+{{if provider:}}
+    <td>Provider</td>
+{{pass}}
+    <td>Caller ID</td>
+    <td>Called Number</td>
+    <td>Call Start</td>
+{{if group == '0':}}
+    <td>Call End</td>
+    <td>Duration</td>
+    <td>Rate</td>
+    <td>Cost</td>
+{{pass}}
+{{if group == '1':}}
+    <td>Release Reason</td>
+{{pass}}
+    <td>Destination</td>
+    <td>IP</td>
+    <td>SIP Proxy</td>
+</tr>
+
+{{for line in data:}}
+<tr>
+    {{for row in line:}}
+    <td>{{=row}}</td>
+    {{pass}}
+{{pass}}
+</tr>
+{{pass}}
+</table>

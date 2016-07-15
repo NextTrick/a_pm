@@ -1,0 +1,115 @@
+{{extend 'layout.html'}}
+
+<h1>Reporte Integrado</h1>
+{{
+total = 0
+total_completed = 0
+total_failed = 0
+total_minutes = 0
+total_cost = 0
+}}
+<table border="1">
+    <tr>
+        <td>Cliente</td>
+        <td>Fecha/Hora</td>
+        {{if ip_number=='True':}}
+        <td>IP</td>
+        {{pass}}
+        {{if origin=='True':}}
+        <td>Origen</td>
+        {{pass}}
+        {{if destination=='True':}}
+        <td>Destino</td>
+        {{pass}}
+        <td>LLamadas</td>
+        <td>Completadas</td>
+        <td>Falladas</td>
+        <td>Minutos</td>
+        <td>ASR</td>
+        <td>ACD</td>
+        <td>Costo</td>
+    </tr>
+{{for line in data:}}
+<tr>
+        <td style="text-align:right">{{=line[0]}}</td>
+        <td style="text-align:right">{{=line[1]}}</td>
+        {{if ip_number=='True':}}
+        <td style="text-align:right">{{=line[2]}}</td>
+        {{pass}}
+        {{if origin=='True':}}
+        <td style="text-align:right">{{=line[3]}}</td>
+        {{pass}}
+        {{if destination=='True':}}
+        <td style="text-align:right">{{=line[4]}}</td>
+        {{pass}}
+        {{if line[5] != None:}}
+        {{total += round(line[5],2)}}
+        {{pass}}
+        <td style="text-align:right">{{=round(line[5],2)}}</td>
+        {{if line[6] != None:}}
+        {{total_completed += round(line[6],2)}}
+        {{pass}}
+        <td style="text-align:right">{{=round(line[6],2)}}</td>
+        {{if line[7] != None:}}
+        {{total_failed += round(line[7],2)}}
+        {{pass}}
+        <td style="text-align:right">{{=round(line[7],2)}}</td>
+        {{if line[8] != None:}}
+        {{total_minutes += round(line[8],2)}}
+        <td style="text-align:right">{{=round(line[8],2)}}</td>
+        {{else:}}
+        <td style="text-align:right">0</td>
+        {{pass}}
+        {{if line[9] != None:}}
+        <td style="text-align:right">{{=round(line[9],2)}}</td>
+        {{else:}}
+        <td style="text-align:right">0</td>
+        {{pass}}
+        {{if line[10] != None:}}
+        <td style="text-align:right">{{=round(line[10],2)}}</td>
+        {{else:}}
+        <td style="text-align:right">0</td>
+        {{pass}}
+        {{if line[11] != None and line[11] > 0:}}
+        {{total_cost += round(line[11],2)}}
+        <td style="text-align:right">{{=round(line[11],2)}}</td>
+        {{else:}}
+        <td style="text-align:right">0</td>
+        {{pass}}
+
+</tr>
+{{pass}}
+<tr>
+    <td></td>
+    <td></td>
+    {{if ip_number=='True':}}
+    <td></td>
+    {{pass}}
+    {{if origin=='True':}}
+    <td></td>
+    {{pass}}
+    {{if destination=='True':}}
+    <td></td>
+    {{pass}}
+    <td style="text-align:right">{{=total}}</td>
+    <td style="text-align:right">{{=total_completed}}</td>
+    <td style="text-align:right">{{=total_failed}}</td>
+    <td style="text-align:right">{{=total_minutes}}</td>
+    {{
+    try:
+    total_asr=round(100*total_completed/(total_completed+total_failed),2)
+    except:
+    total_asr=0
+    pass
+    try:
+    total_acd=round(total_minutes/total_completed,2)
+    except:
+    total_acd=0
+    pass
+    }}
+    <td style="text-align:right">{{=total_asr}}</td>
+    <td style="text-align:right">{{=total_acd}}</td>
+
+    <td style="text-align:right">{{=total_cost}}</td>
+</tr>
+</table>
