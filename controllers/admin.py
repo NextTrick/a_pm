@@ -14,6 +14,9 @@ def index():
 def error():
     return dict()
 
+def get_csv():
+    file_name = request.vars.file_name
+    return dict(file_name=file_name)
 
 @auth.requires_membership('root')
 def graphics():
