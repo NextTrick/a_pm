@@ -787,6 +787,7 @@
 'Void Reason': 'Razón de Anulación',
 'VOIP': 'VOIP',
 'VOIP Current Calls': 'Llamadas VOIP en Curso',
+'VOIP Servers': 'VOIP Servers',
 'VOIPSwitch Servers': 'Servidores VOIPSwitch',
 'Web URL': 'Web URL',
 'web2py is up to date': 'web2py está actualizado',

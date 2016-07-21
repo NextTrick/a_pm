@@ -238,20 +238,24 @@ def data_graphics(val_start, val_end, cliente_condition='TODOS',
     return costos, consumo, minutos, llamadas, ganancia, rentabilidad, data
 
 
-def generate_graphics(val_start=None, val_end=None, cliente_condition='TODOS',
+def generate_graphics(val_start=None, val_end=None, num_days=30, cliente_condition='TODOS',
                       vendedor_condition='TODOS', cuenta_condition=''):
-    year = now.year
-    month = now.month - 1 or 12
-    if month == 12:
-        year = now.year -1
-    day = now.day
-    try:
-        last = datetime.datetime(year, month, day)
-    except:
-        last = datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+    # year = now.year
+    # month = now.month - 1 or 12
+    # if month == 12:
+    #     year = now.year -1
+    # day = now.day
+    # try:
+    #     last = datetime.datetime(year, month, day)
+    # except:
+    #     last = datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+    today = datetime.datetime.now()
+    last = today - datetime.timedelta(days=num_days)
     if val_start is None:
         val_start = last.date()
-        val_end = datetime.datetime.now().date()
+        val_end = today.date()
+    if val_end is None:
+        val_end = today.date()
     query = """select fecha,sum(intentos),sum(completados),sum(fallados),
     sum(minutos),sum(costoclientedolsinigv),sum(costoproveedor),
     sum(ganancia),ifnull(sum(costoclientedolsinigv-costoproveedor)/sum(costoproveedor)*100,0),

@@ -75,10 +75,10 @@ def graphics():
     costos, consumo, minutos, llamadas, ganancia, rentabilidad, data = data_graphics(
         val_start, val_end, cliente_condition,
         vendedor_condition, cuenta_condition)
-    print costos
     return dict(form=form, data=data, costos=costos,
                 consumo=consumo, minutos=minutos,
                 llamadas=llamadas, ganancia=ganancia, rentabilidad=rentabilidad, title=title)
+
 
 
 @auth.requires_membership('root')
@@ -652,3 +652,96 @@ def admin_reports():
                 customer=customer,provider=provider,
                 destination=destination,origin=origin,
                 prefix=prefix, group=group, csv_path=csv_path, title=title)
+
+
+@auth.requires_membership('root')
+def cdr_aux_reports():
+    title = T('CDR Reports')
+    servers = {}
+    data = []
+    options = {
+        0: T('Completed'),
+        1: T('Failed'),
+    }
+    rows = db(db.services_servers.id>0).select(db.services_servers.id,
+                                              db.services_servers.name,
+                                              db.services_servers.host_ip)
+    for row in rows:
+        servers[row.id] = "%s-%s" % (row.name, row.host_ip)
+    servers['todos'] = 'todos'
+    year = now.year
+    month = now.month - 1 or 12
+    if month == 12:
+        year = now.year -1
+    day = now.day
+    try:
+        last = datetime.datetime(year, month, day)
+    except:
+        last = datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+    if len(request.vars) > 0:
+        if type(request.vars.start_time) is types.ListType:
+            val_start = datetime.datetime.strptime(request.vars.from_date[0], '%d/%m/%Y')
+            val_end = datetime.datetime.strptime(request.vars.to_date[0], '%d/%m/%Y')
+        else:
+            val_start = datetime.datetime.strptime(request.vars.from_date, '%d/%m/%Y')
+            val_end = datetime.datetime.strptime(request.vars.to_date, '%d/%m/%Y')
+    else:
+        val_start = datetime.datetime.now()
+        val_end = datetime.datetime.now()
+    val_start = val_start.date()
+    val_end = val_end.date()
+    req_customer = request.vars.customer
+    req_customer_name = request.vars.customer_name
+    if req_customer_name is None:
+        req_customer_name = '%'
+    req_provider = request.vars.provider
+    req_provider_name = request.vars.provider_name
+    if req_provider_name is None:
+        req_provider_name = '%'
+    req_called_number = request.vars.called_number
+    if req_called_number is None:
+        req_called_number = '%'
+    req_release_reason = request.vars.release_reason
+    if req_release_reason is None:
+        req_release_reason = '%'
+    req_from_hour = request.vars.from_hour
+    if req_from_hour is None:
+        req_from_hour = '00:00:00'
+    req_to_hour = request.vars.to_hour
+    if req_to_hour is None:
+        req_to_hour = '23:59:59'
+    form = SQLFORM.factory(
+        Field('customer', 'boolean', default=req_customer, label=T('Customer')),
+        Field('customer_name', 'string', default=req_customer_name, label=T('Customer')),
+        Field('provider', 'boolean', default=req_provider, label=T('Provider')),
+        Field('provider_name', 'string', default=req_provider_name, label=T('Provider')),
+        Field('called_number', 'string', default=req_called_number, label=T('Called Number')),
+        Field('release_reason', 'string', default=req_release_reason, label=T('Release Reason')),
+        Field('from_date', 'date', label=T('From'), default=val_start),
+        Field('from_hour', 'string', label=T('From'), default=req_from_hour),
+        Field('to_date', 'date', label=T('To'), default=val_end),
+        Field('to_hour', 'string', label=T('To'), default=req_to_hour),
+        Field('group', label=T('Group'), default=0, requires=IS_IN_SET(options), widget=SQLFORM.widgets.radio.widget),
+        Field('server', label=T('Server'), default='todos', requires=IS_IN_SET(servers)),
+    )
+    group = False
+    csv_path= False
+    release_reason = False
+    customer = False
+    provider = False
+    if form.process().accepted:
+        customer = form.vars.customer
+        customer_name = form.vars.customer_name
+        provider = form.vars.provider
+        provider_name = form.vars.provider_name
+        called_number = form.vars.called_number
+        release_reason = form.vars.release_reason
+        from_date = form.vars.from_date
+        to_date = form.vars.to_date
+        from_time = "%s %s" % (from_date, form.vars.from_hour)
+        to_time = "%s %s" % (to_date, form.vars.to_hour)
+        group = form.vars.group
+        server = form.vars.server
+        print from_time
+        print to_time
+    return dict(form=form)
