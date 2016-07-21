@@ -19,5 +19,5 @@ settings.login_config = ''
 settings.plugins = []
 GLOBAL_TAX = 18
 DETRACTION = 10
-UPLOAD_PATH = 'applications/sige/download'
+UPLOAD_PATH = 'applications/ardana_prime/download'
 
