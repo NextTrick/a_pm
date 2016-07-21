@@ -13,12 +13,8 @@ hostname = socket.gethostname()
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
     #db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
-    if hostname == 'usve37450':
-        db = DAL('mysql://integracion:y2KItelvox14@69.64.35.200/sige',pool_size=1,check_reserved=['all'], migrate=False)
-        db2 = DAL('mysql://integracion:y2KItelvox14@69.64.35.200/integracion',pool_size=1,check_reserved=['all'], migrate=False)
-    else:
-        db = DAL('mysql://integracion:y2KItelvox14@localhost/sige',pool_size=1,check_reserved=['all'])
-        db2 = DAL('mysql://integracion:y2KItelvox14@localhost/integracion',pool_size=1,check_reserved=['all'])
+    db = DAL('mysql://integracion:y2KItelvox14@localhost/sige',pool_size=1,check_reserved=['all'], migrate=False)
+    db2 = DAL('mysql://integracion:y2KItelvox14@localhost/integracion',pool_size=1,check_reserved=['all'], migrate=False)
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     db = DAL('google:datastore')
