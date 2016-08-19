@@ -25,8 +25,7 @@ def registered_users():
                                                               orderby=db.accounts.account)
         for row in rows:
             customers.append(row.account)
-        query = ((db.registered_users.account.contains(customers)))
-
+        query = ((db.registered_users.login_account.contains(customers)))
     else:
         query = ((db.registered_users.id > 0))
     response.view = 'default.html'
