@@ -63,7 +63,7 @@ def manage_limited():
         query = ((db.customers.id > 0) & (db.customers_sellers.seller == sales_user_id))
     else:
         query = ((db.customers.id > 0))
-    print query
+#    print query
     response.view = 'default.html'
     title = T('Customer Management')
     db.services_configurations.customer_service.writable = False
