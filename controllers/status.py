@@ -26,7 +26,8 @@ def registered_users():
                                 ])
     return dict(form=form_grid, title=title)
 
-@auth.requires_membership('root')
+#@auth.requires_membership('root')
+@auth.requires_login()
 def current_calls():
     user_id = auth.user.id
     sales_user_id = 1
@@ -82,7 +83,8 @@ def customer_current_calls():
     return dict(form=form_grid, title=title)
 
 #@auth.requires_membership('root')
-@auth.requires_membership('sales')
+#@auth.requires_membership('sales')
+@auth.requires_login()
 def accounts():
     user_id = auth.user.id
     sales_user_id = 1
