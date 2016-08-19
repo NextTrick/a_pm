@@ -10,13 +10,30 @@ def index():
 def error():
     return dict()
 
-@auth.requires_membership('root')
+#@auth.requires_membership('root')
+@auth.requires_login()
 def registered_users():
+    user_id = auth.user.id
+    sales_user_id = 1
+    sales_user = auth.has_membership(role='sales')
+    root_user = auth.has_membership(role='root')
+    customers = []
+    if sales_user:
+        sales_user_id = db.sellers(db.sellers.related_user == user_id).id
+        rows = db(db.accounts.seller == sales_user_id).select(db.accounts.id,
+                                                              db.accounts.account,
+                                                              orderby=db.accounts.account)
+        for row in rows:
+            customers.append(row.account)
+        query = ((db.registered_users.account.contains(customers)))
+
+    else:
+        query = ((db.registered_users.id > 0))
     response.view = 'default.html'
     title = T('Registered Users')
     db.registered_users.server_id.represent = lambda  value, row: None if value is None else name_data(db.services_servers, value, "host_ip")
 #    db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
-    form_grid = SQLFORM.grid(db.registered_users,
+    form_grid = SQLFORM.grid(query,
                         editable=False, deletable=False,
                         create=False, details=False,
                         paginate=50,
@@ -45,7 +62,6 @@ def current_calls():
 
     else:
         query = ((db.current_calls.id > 0))
-
     response.view = 'default.html'
     title = T('Current Calls')
     db.current_calls.server_id.represent = lambda  value, row: None if value is None else name_data(db.services_servers, value, "host_ip")
