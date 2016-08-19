@@ -13,7 +13,7 @@ hostname = socket.gethostname()
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
     #db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
-    db = DAL('mysql://integracion:y2KItelvox14@localhost/sige',pool_size=1,check_reserved=['all'], migrate=False)
+    db = DAL('mysql://integracion:y2KItelvox14@localhost/sige',pool_size=1,check_reserved=['all'], migrate=True)
     db2 = DAL('mysql://integracion:y2KItelvox14@localhost/integracion',pool_size=1,check_reserved=['all'], migrate=False)
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
@@ -410,6 +410,12 @@ db.define_table('sellers',
                 Field('related_user', db.auth_user, label=T('Related User'),
                       requires=IS_EMPTY_OR(IS_IN_DB(db, db.auth_user, '%(email)s'))),
                 format='%(name)s')
+
+db.define_table('customers_sellers',
+                Field('customer', 'reference customers', label=T('Customer')),
+                Field('seller', 'reference sellers', label=T('Seller')),
+                format='%(id)s')
+
 
 db.define_table('customers_addresses',
                 Field('register_time', 'datetime', label=T('Register Time'),

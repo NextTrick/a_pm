@@ -215,6 +215,7 @@ def data_graphics(val_start, val_end, cliente_condition='TODOS',
     if len(cuenta_condition) > 1:
         query += "and cuenta='%s'" % cuenta_condition
     query += "group by fecha;"
+    #print query
     data = db2.executesql(query)
     consumo = []
     costos = []

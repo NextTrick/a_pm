@@ -5,7 +5,7 @@
         <img src="{{=URL('static','images/img.jpg')}}" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
-        <span>Welcome,</span>
+        <span>{{=T('Welcome')}},</span>
         <h2>{{=auth.user.first_name}}</h2>
     </div>
 </div>
@@ -50,7 +50,8 @@
                     <li><a href="{{=URL('user','manage')}}">{{=T('Manage')}}</a></li>
                     <li><a href="{{=URL('user','groups')}}">{{=T('Groups')}}</a></li>
                     <li><a href="{{=URL('user','memberships')}}">{{=T('Memberships')}}</a></li>
-                    <li><a href="{{=URL('user','sellers')}}">Sell{{=T('Sellers')}}ers</a></li>
+                    <li><a href="{{=URL('user','sellers')}}">{{=T('Sellers')}}</a></li>
+                    <li><a href="{{=URL('user','customers_sellers')}}">{{=T('Customers Sellers')}}</a></li>
                 </ul>
             </li>
         </ul>
@@ -59,22 +60,25 @@
     <div class="menu_section">
         <h3>Setup</h3>
         <ul class="nav side-menu">
-        {{if auth.has_membership(role='root') or auth.has_membership(role='planification_user') or auth.has_membership(role='supervisor'):}}
-
             <li><a><i class="fa fa-bar-chart-o"></i> {{=T('Business')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
+                {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('setup','voip')}}">{{=T('VOIP')}}</a></li>
+                {{pass}}
+                {{if auth.has_membership(role='root') or auth.has_membership(role='sales'):}}
                     <li><a href="{{=URL('customers','manage')}}">{{=T('Customers')}}</a></li>
+                {{pass}}
+                {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('customers','contract')}}">{{=T('Customers Contracts')}}</a></li>
                     <li><a href="{{=URL('setup','service')}}">{{=T('Services')}}</a></li>
                     <li><a href="{{=URL('providers','manage')}}">{{=T('Providers')}}</a></li>
                     <li><a href="{{=URL('providers','contracts')}}">{{=T('Providers Contracts')}}</a></li>
+                {{pass}}
                 </ul>
             </li>
-        {{pass}}
         </ul>
     </div>
-{{if auth.has_membership(role='root') or auth.has_membership(role='operation_user') or auth.has_membership(role='supervisor'):}}
+{{if auth.has_membership(role='root') or auth.has_membership(role='sales'):}}
     <div class="menu_section">
         <h3>Manage</h3>
         <ul class="nav side-menu">
@@ -88,9 +92,12 @@
             <li><a><i class="fa fa-windows"></i> {{=T('Status')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{=URL('status', 'accounts')}}"><i class="fa fa-bug"></i> {{=T('Accounts')}} </a>
-                    <li><a href="{{=URL('status', 'current_calls')}}"><i class="fa fa-bug"></i> {{=T('Current Calls')}} </a>
-                    <li><a href="{{=URL('status', 'customer_current_calls')}}"><i class="fa fa-bug"></i> {{=T('Customer Current Calls')}} </a>
-                    <li><a href="{{=URL('status', 'registered_users')}}"><i class="fa fa-bug"></i> {{=T('Registered Users')}} </a>
+                    <li><a href="{{=URL('status', 'current_calls')}}"><i class="fa fa-bug"></i> {{=T('Current Calls')}}
+                    </a>
+                    <li><a href="{{=URL('status', 'customer_current_calls')}}"><i
+                            class="fa fa-bug"></i> {{=T('Customer Current Calls')}} </a>
+                    <li><a href="{{=URL('status', 'registered_users')}}"><i
+                            class="fa fa-bug"></i> {{=T('Registered Users')}} </a>
                 </ul>
             </li>
         </ul>

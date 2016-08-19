@@ -31,7 +31,7 @@ def groups():
 
 #@auth.requires(restrictions)
 @auth.requires_membership('root')
-def membership():
+def memberships():
     response.view = 'default.html'
     title = T('Membership')
     form = SQLFORM.grid(db.auth_membership,
@@ -43,4 +43,11 @@ def sellers():
     response.view = 'default.html'
     title = T('Sellers')
     form = SQLFORM.grid(db.sellers, deletable=False)
+    return dict(form=form, title=title)
+
+@auth.requires_membership('root')
+def customers_sellers():
+    response.view = 'default.html'
+    title = T('Customers Sellers')
+    form = SQLFORM.grid(db.customers_sellers, deletable=False)
     return dict(form=form, title=title)
