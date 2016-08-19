@@ -64,15 +64,14 @@
                 <ul class="nav child_menu">
                 {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('setup','voip')}}">{{=T('VOIP')}}</a></li>
-                {{pass}}
-                {{if auth.has_membership(role='root') or auth.has_membership(role='sales'):}}
                     <li><a href="{{=URL('customers','manage')}}">{{=T('Customers')}}</a></li>
-                {{pass}}
-                {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('customers','contract')}}">{{=T('Customers Contracts')}}</a></li>
                     <li><a href="{{=URL('setup','service')}}">{{=T('Services')}}</a></li>
                     <li><a href="{{=URL('providers','manage')}}">{{=T('Providers')}}</a></li>
                     <li><a href="{{=URL('providers','contracts')}}">{{=T('Providers Contracts')}}</a></li>
+                {{pass}}
+                {{if auth.has_membership(role='sales'):}}
+                    <li><a href="{{=URL('customers','manage_limited')}}">{{=T('Customers')}}</a></li>
                 {{pass}}
                 </ul>
             </li>
