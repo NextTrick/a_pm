@@ -632,6 +632,7 @@ a:hover, a:focus {
 .nav.child_menu > li > a {
   color: #ffffff;
   font-size: 12px;
+  text-transform: capitalize;
   padding: 9px; }
 
 .panel_toolbox {

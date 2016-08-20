@@ -1,8 +1,8 @@
 {{if auth.user:}}
 <!-- menu profile quick info -->
 <div class="profile">
-    <div class="profile_pic">
-        <img src="{{=URL('static','images/favicon.png')}}" alt="..." class="img-circle profile_img">
+    <div class="profile_pic" style="text-align: center">
+        <img src="{{=URL('static','images/favicon.png')}}">
     </div>
     <div class="profile_info">
         <span>{{=T('Welcome')}},</span>
@@ -14,9 +14,10 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 {{if auth.has_membership(role='root'):}}
     <div class="menu_section">
-        <h3>Configuration</h3>
+        <h3></h3>
+        <br/>
         <ul class="nav side-menu">
-            <li><a href="{{=URL('default','index')}}"><i class="fa fa-home"></i> Home </a>
+            <li><a href="{{=URL('default','index')}}"><i class="fa fa-home"></i> Panel </a>
             </li>
             <li><a><i class="fa fa-edit"></i> {{=T('Basics')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
