@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="{{=URL('static','css/maps/jquery-jvectormap-2.0.3.css')}}"/>
 
     <!-- Custom Theme Style -->
-    <link rel="stylesheet" href="{{=URL('static','css/build/custom.min.css')}}"/>
+    <!--link rel="stylesheet" href="{{=URL('static','css/build/custom.min.css')}}"/-->
+    <link rel="stylesheet" href="{{=URL('static','css/build/custom.css')}}"/>
     <link rel="stylesheet" href="{{=URL('static','css/web2py-custom.css')}}"/>
 
    <!-- <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/>-->
@@ -61,7 +62,7 @@ middle_column = {0: mc0, 1: mc1, 2: mc2}[
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{=URL('default','index')}}" class="site_title"><i class="fa fa-paw"></i> <span>SIGE</span></a>
+                    <a href="{{=URL('default','index')}}" class="site_title"><img src="{{=URL('static', 'images/favicon.png')}}"></img> <span>SIGE</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -72,7 +73,7 @@ middle_column = {0: mc0, 1: mc1, 2: mc2}[
                 <!-- /sidebar menu -->
 
                 <!-- /menu footer buttons -->
-            {{include 'footer_menu.html'}}
+            <!--include 'footer_menu.html'-->
                 <!-- /menu footer buttons -->
             </div>
         </div>

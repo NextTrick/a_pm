@@ -19,7 +19,7 @@ def index():
     where serv.customer is NULL order by acc.login,acc.server_id;
     """
     data = db2.executesql(query)
-    costos, consumos, minutos, llamadas = generate_graphics(num_days=2)
+    costos, consumos, minutos, llamadas = generate_graphics(num_days=7)
     return dict(data=data, costos=costos, consumos=consumos, minutos=minutos, llamadas=llamadas)
 
 def error():

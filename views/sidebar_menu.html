@@ -60,7 +60,7 @@
     <div class="menu_section">
         <h3>Setup</h3>
         <ul class="nav side-menu">
-            <li><a><i class="fa fa-bar-chart-o"></i> {{=T('Business')}} <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-building"></i> {{=T('Business')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                 {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('setup','voip')}}">{{=T('VOIP')}}</a></li>
@@ -81,7 +81,7 @@
     <div class="menu_section">
         <h3>Manage</h3>
         <ul class="nav side-menu">
-            <li><a><i class="fa fa-bug"></i> {{=T('Reports')}} <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-bar-chart-o"></i> {{=T('Reports')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{=URL('admin', 'graphics')}}">{{=T('Graphics')}}</a></li>
                     <li><a href="{{=URL('admin', 'cdr_reports')}}">{{=T('CDRs')}}</a></li>

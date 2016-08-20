@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .left_col {
-  background: #2A3F54; }
+  background: #262626; }
 
 .nav-sm .container.body .col-md-3.left_col {
   width: 70px;
@@ -208,7 +208,7 @@ body .container.body .right_col {
 .nav_title {
   width: 230px;
   float: left;
-  background: #2A3F54;
+  background: #262626;
   border-radius: 0;
   height: 57px; }
 
@@ -327,7 +327,7 @@ body .container.body .right_col {
 
 body {
   color: #73879C;
-  background: #2A3F54;
+  background: #262626;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -630,7 +630,7 @@ a:hover, a:focus {
   font-size: 26px; }
 
 .nav.child_menu > li > a {
-  color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
   font-size: 12px;
   padding: 9px; }
 
