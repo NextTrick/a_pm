@@ -101,7 +101,7 @@ def customer_current_calls():
     else:
         query = ((db.current_calls.id > 0))
     response.view = 'default.html'
-    title = T('Current Calls')
+    title = T('Customer Current Calls')
     db.current_calls.server_id.represent = lambda  value, row: None if value is None else name_data(db.services_servers, value, "host_ip")
     db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
     form_grid = SQLFORM.grid(query,

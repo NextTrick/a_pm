@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 {
+'!=': '!=',
 '!langcode!': 'es',
 '!langname!': 'Español',
 '"update" is an optional expression like "field1=\'newvalue\'". You cannot update or delete the results of a JOIN': '"actualice" es una expresión opcional como "campo1=\'nuevo_valor\'". No se puede actualizar o eliminar resultados de un JOIN',
@@ -100,7 +101,7 @@
 'Back': 'Atrás',
 'Balance': 'Balance',
 'Bank': 'Banco',
-'Bank Account Types': 'Bank Account Types',
+'Bank Account Types': 'Tipos de Cuentas Bancarias',
 'Banks': 'Bancos',
 'Banks Account Types': 'Tipos de Cuentas Bancarias',
 'Basics': 'Básicos',
