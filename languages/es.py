@@ -207,7 +207,7 @@
 'Currencies exchange rateses(destination_currency)': 'Tipo de Cambio(moneda destino)',
 'Currencieses': 'Monedas',
 'Currency': 'Moneda',
-'Current Calls': 'Llamadas Actuales',
+'Current Calls': 'Llamadas Proveedor',
 'Current request': 'Solicitud en curso',
 'Current response': 'Respuesta en curso',
 'Current session': 'Sesión en curso',
