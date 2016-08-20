@@ -169,6 +169,7 @@
 'Customer Service': 'Customer Service',
 'Customers': 'Customers',
 'Customers Contracts': 'Customers Contracts',
+'Customers Sellers': 'Customers Sellers',
 'Cycle': 'Cycle',
 'Daily': 'Daily',
 'data uploaded': 'data diunggah',

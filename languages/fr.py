@@ -141,6 +141,7 @@
 'Customer Service': 'Customer Service',
 'Customers': 'Customers',
 'Customers Contracts': 'Customers Contracts',
+'Customers Sellers': 'Customers Sellers',
 'customize me!': 'personnalisez-moi!',
 'Cycle': 'Cycle',
 'Daily': 'Daily',

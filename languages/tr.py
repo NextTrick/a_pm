@@ -145,6 +145,7 @@
 'Customer Service': 'Customer Service',
 'Customers': 'Customers',
 'Customers Contracts': 'Customers Contracts',
+'Customers Sellers': 'Customers Sellers',
 'customize me!': 'burayı değiştir!',
 'Cycle': 'Cycle',
 'Daily': 'Daily',

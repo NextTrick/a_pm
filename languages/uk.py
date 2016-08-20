@@ -162,6 +162,7 @@
 'Customer Service': 'Customer Service',
 'Customers': 'Customers',
 'Customers Contracts': 'Customers Contracts',
+'Customers Sellers': 'Customers Sellers',
 'customize me!': 'причепуріть мене!',
 'Cycle': 'Cycle',
 'Daily': 'Daily',

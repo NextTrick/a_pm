@@ -195,6 +195,7 @@
 'Customer Service': 'Customer Service',
 'Customers': 'Customers',
 'Customers Contracts': 'Customers Contracts',
+'Customers Sellers': 'Customers Sellers',
 'customize me!': 'pas me aan!',
 'Cycle': 'Cycle',
 'Daily': 'Daily',
