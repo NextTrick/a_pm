@@ -26,7 +26,7 @@ def registered_users():
                                                               db.accounts.account,
                                                               orderby=db.accounts.account)
         if len(rows) < 1:
-            return dict(form=False, title=title)
+            return dict(form='', title=title)
         for row in rows:
             customers.append(row.account)
         query = ((db.registered_users.login_account.contains(customers)))
