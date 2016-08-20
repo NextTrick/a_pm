@@ -83,20 +83,18 @@
         <ul class="nav side-menu">
             <li><a><i class="fa fa-bar-chart-o"></i> {{=T('Reports')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{=URL('admin', 'graphics')}}">{{=T('Graphics')}}</a></li>
+                    <li><i class="fa fa-bar-chart"></i> <a href="{{=URL('admin', 'graphics')}}">{{=T('Graphics')}}</a></li>
                     <li><a href="{{=URL('admin', 'cdr_reports')}}">{{=T('CDRs')}}</a></li>
                     <li><a href="{{=URL('admin', 'admin_reports')}}">{{=T('Administration')}}</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-windows"></i> {{=T('Status')}} <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{=URL('status', 'accounts')}}"><i class="fa fa-bug"></i> {{=T('Accounts')}} </a>
-                    <li><a href="{{=URL('status', 'current_calls')}}"><i class="fa fa-bug"></i> {{=T('Current Calls')}}
+                    <li><a href="{{=URL('status', 'accounts')}}">{{=T('Accounts')}} </a>
+                    <li><a href="{{=URL('status', 'current_calls')}}">{{=T('Current Calls')}}
                     </a>
-                    <li><a href="{{=URL('status', 'customer_current_calls')}}"><i
-                            class="fa fa-bug"></i> {{=T('Customer Current Calls')}} </a>
-                    <li><a href="{{=URL('status', 'registered_users')}}"><i
-                            class="fa fa-bug"></i> {{=T('Registered Users')}} </a>
+                    <li><a href="{{=URL('status', 'customer_current_calls')}}">{{=T('Customer Current Calls')}} </a>
+                    <li><a href="{{=URL('status', 'registered_users')}}">{{=T('Registered Users')}} </a>
                 </ul>
             </li>
         </ul>
