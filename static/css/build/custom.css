@@ -90,6 +90,10 @@
 .nav-sm .profile {
   display: none; }
 
+.nav.side-menu li {
+  line-height: 5px;
+}
+
 .menu_section {
   margin-bottom: 35px; }
 
@@ -122,7 +126,7 @@
   padding: 4px; }
 
 .profile_info {
-  padding: 25px 10px 10px;
+  padding: 1px 1px 1px;
   width: 65%;
   float: left; }
 
@@ -509,7 +513,7 @@ a:hover, a:focus {
   content: "";
   height: 8px;
   left: 23px;
-  margin-top: 15px;
+  margin-top: 5px;
   position: absolute;
   right: auto;
   width: 8px;
@@ -655,7 +659,9 @@ a:hover, a:focus {
   line-height: 30px; }
 
 .main_menu_side {
-  padding: 0; }
+  padding: 0;
+  line-height: 3;
+}
 
 .bs-docs-sidebar .nav > li > a {
   display: block;
