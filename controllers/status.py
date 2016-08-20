@@ -13,6 +13,8 @@ def error():
 #@auth.requires_membership('root')
 @auth.requires_login()
 def registered_users():
+    response.view = 'default.html'
+    title = T('Registered Users')
     user_id = auth.user.id
     sales_user_id = 1
     sales_user = auth.has_membership(role='sales')
@@ -23,13 +25,13 @@ def registered_users():
         rows = db(db.accounts.seller == sales_user_id).select(db.accounts.id,
                                                               db.accounts.account,
                                                               orderby=db.accounts.account)
+        if len(rows) < 1:
+            return dict(form=False, title=title)
         for row in rows:
             customers.append(row.account)
         query = ((db.registered_users.login_account.contains(customers)))
     else:
         query = ((db.registered_users.id > 0))
-    response.view = 'default.html'
-    title = T('Registered Users')
     db.registered_users.server_id.represent = lambda  value, row: None if value is None else name_data(db.services_servers, value, "host_ip")
 #    db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
     form_grid = SQLFORM.grid(query,
