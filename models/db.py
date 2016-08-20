@@ -1018,6 +1018,7 @@ def mail_notify(invoice, subject, message):
 
 
 #db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
+db.accounts.account.requires = IS_NOT_IN_DB(db, 'accounts.account')
 db.customers.tax_id.requires = IS_NOT_IN_DB(db, 'customers.tax_id')
 db.customers_services.did.requires = IS_EMPTY_OR(IS_NOT_IN_DB(db, 'customers_services.did'))
 db.customers.status.represent = lambda  value, row: None if value is None else status_options[value]
