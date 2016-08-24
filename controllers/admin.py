@@ -612,6 +612,8 @@ def admin_reports():
         query_str += 'callsok.tariffdesc like "%s" and ' % (destination_name)
         if sales_user:
             query_str += 'acc.login like "%s" and acc.seller = "%s" and ' % (customer_name, sales_user_id)
+        else:
+            query_str += 'acc.login like "%s" and ' % (customer_name)
             #query_str += 'and acc.seller = "%s " ' % (sales_user_id)
         query_str += '(gatekeepers.description like "%s" or gateways.description like "%s" or acc2.login like "%s") ' % (
             provider_name, provider_name, provider_name)
@@ -677,6 +679,8 @@ def admin_reports():
         query_str += 'callsfailed.call_start between "%s" and "%s"  and ' % (start_time, end_time)
         if sales_user:
             query_str += 'acc.login like "%s" and acc.seller = "%s" and ' % (customer_name, sales_user_id)
+        else:
+            query_str += 'acc.login like "%s" and ' % (customer_name)
         query_str += '(gatekeepers.description like "%s" or gateways.description like "%s" or acc2.login like "%s" or callsfailed.tariffdesc like "%s") ' % (
             provider_name, provider_name, provider_name, destination_name)
         if server != 'todos':
@@ -695,7 +699,7 @@ def admin_reports():
         query_str += 'group by '
         query_str += 'fecha, cliente, t.invoicetype, moneda, igv, proveedor, destino, ip_number, origen, prefijo '
         query_str += 'order by fecha, cliente, invoicetype, moneda, igv, proveedor, destino, ip_number, origen, prefijo '
-        #print query_str
+        print query_str
         data = db2.executesql(query_str)
         total_calls = decimal.Decimal(0)
         total_completed = decimal.Decimal(0)
