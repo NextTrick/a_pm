@@ -699,7 +699,6 @@ def admin_reports():
         query_str += 'group by '
         query_str += 'fecha, cliente, t.invoicetype, moneda, igv, proveedor, destino, ip_number, origen, prefijo '
         query_str += 'order by fecha, cliente, invoicetype, moneda, igv, proveedor, destino, ip_number, origen, prefijo '
-        print query_str
         data = db2.executesql(query_str)
         total_calls = decimal.Decimal(0)
         total_completed = decimal.Decimal(0)
