@@ -138,3 +138,49 @@ def accounts():
                         editable=False, deletable=False,
                         create=False, details=False)
     return dict(form=form_grid, title=title)
+
+@auth.requires_login()
+def credits():
+    user_id = auth.user.id
+    sales_user = auth.has_membership(role='sales')
+    if sales_user:
+        sales_user_id = db.sellers(db.sellers.related_user == user_id).id
+        query = ((db.customers_credits.seller == sales_user_id))
+    else:
+        query = ((db.customers_credits.id > 0))
+    response.view = 'default.html'
+    title = T('Credits')
+    #query = (db.customers_credits.customer == customer)
+    form = SQLFORM.grid(query,
+                        editable=False, deletable=False,
+                        create=False, paginate=50,
+                        fields=[
+                            db.customers_credits.register_time,
+                            db.customers_credits.credit_type,
+                            db.customers_credits.customer,
+                            db.customers_credits.seller,
+                            db.customers_credits.login_reference,
+                            db.customers_credits.currency,
+                            db.customers_credits.amount,
+                            db.customers_credits.customer_amount,
+                            db.customers_credits.notes,
+                            db.customers_credits.status,
+                        ]
+                        # exportclasses=dict(xml=False, html=False, json=False, tsv=False,
+                        #          tsv_with_hidden_cols=False),
+                        )
+    # db.current_calls.server_id.represent = lambda  value, row: None if value is None else name_data(db.services_servers, value, "host_ip")
+    # db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
+    # form_grid = SQLFORM.grid(db.current_calls,
+    #                     editable=False, deletable=False,
+    #                     create=False, details=False,
+    #                     paginate=50,
+    #                     fields=[db.current_calls.account, db.current_calls.account_state,
+    #                             db.current_calls.ani,
+    #                             db.current_calls.dialed_number, db.current_calls.call_start,
+    #                             db.current_calls.duration, db.current_calls.tariffdesc,
+    #                             db.current_calls.route,
+    #                             db.current_calls.call_state, db.current_calls.server_id
+    #                             ])
+    # return dict(form_grid=form_grid)
+    return dict(form=form, title=title)

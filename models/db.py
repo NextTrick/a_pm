@@ -561,6 +561,7 @@ db.define_table('customers_credits',
                 Field('correlative', 'integer', label=T('Correlative'), writable=False),
                 Field('status', 'integer', label=T('Status'), default=0,
                       requires=IS_IN_SET(credits_options)),
+                Field('seller', 'reference sellers', label=T('Seller')),
                 format='%(id)s')
 
 # db.define_table('customers_charges',
