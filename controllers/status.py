@@ -151,8 +151,19 @@ def credits():
     response.view = 'default.html'
     title = T('Credits')
     #query = (db.customers_credits.customer == customer)
+    db.customers_credits.register_time.writable = False
+    db.customers_credits.credit_type.writable = False
+    db.customers_credits.customer.writable = False
+    db.customers_credits.seller.writable = False
+    db.customers_credits.login_reference.writable = False
+    db.customers_credits.currency.writable = False
+    db.customers_credits.amount.writable = False
+    db.customers_credits.customer_amount.writable = False
+    db.customers_credits.notes.writable = False
+    db.customers_credits.service.writable = False
+    db.customers_credits.condition_status.writable = False
     form = SQLFORM.grid(query,
-                        editable=False, deletable=False,
+                        editable=True, deletable=False,
                         create=False, paginate=50,
                         fields=[
                             db.customers_credits.register_time,
