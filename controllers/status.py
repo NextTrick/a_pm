@@ -59,8 +59,8 @@ def current_calls():
                                                               orderby=db.accounts.account)
         for row in rows:
             customers.append(row.account)
-        query = ((db.accounts.seller == sales_user_id) & (db.current_calls.account.contains(customers)))
-
+        #query = ((db.accounts.seller == sales_user_id) & (db.current_calls.account.contains(customers)))
+        query = (db.current_calls.account.contains(customers))
     else:
         query = ((db.current_calls.id > 0))
     response.view = 'default.html'
@@ -96,8 +96,8 @@ def customer_current_calls():
                                                               orderby=db.accounts.account)
         for row in rows:
             customers.append(row.account)
-        query = ((db.accounts.seller == sales_user_id) & (db.current_calls.account.contains(customers)))
-
+        #query = ((db.accounts.seller == sales_user_id) & (db.current_calls.account.contains(customers)))
+        query = (db.current_calls.account.contains(customers))
     else:
         query = ((db.current_calls.id > 0))
     response.view = 'default.html'
