@@ -76,7 +76,8 @@ def current_calls():
                                 db.current_calls.dialed_number, db.current_calls.call_start,
                                 db.current_calls.duration, db.current_calls.tariffdesc,
                                 db.current_calls.route,
-                                db.current_calls.call_state, db.current_calls.server_id
+                                db.current_calls.call_state, db.current_calls.server_id,
+                                db.current_calls.seller
                                 ])
     return dict(form=form_grid, title=title)
 
@@ -112,7 +113,8 @@ def customer_current_calls():
                                 db.current_calls.ani,
                                 db.current_calls.dialed_number, db.current_calls.call_start,
                                 db.current_calls.duration, db.current_calls.tariffdesc,
-                                db.current_calls.call_state, db.current_calls.server_id
+                                db.current_calls.call_state, db.current_calls.server_id,
+                                db.current_calls.seller
                                 ])
     return dict(form=form_grid, title=title)
 

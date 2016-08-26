@@ -312,21 +312,6 @@ db.define_table('tariffs_integrated',
                 Field('voice_rate', label=T('Rate')),
                 format='%(id_tariff)s', migrate=False)
 
-db.define_table('current_calls',
-                Field('id_call', label=T('ID Call')),
-                Field('account', label=T('Account')),
-                Field('account_state', label=T('Credit')),
-                Field('ani', label=T('Origin Number')),
-                Field('dialed_number', label=T('Dialed Number')),
-                Field('call_start', label=T('Start Time')),
-                Field('duration', 'time', label=T('Duration')),
-                Field('tariffdesc', label=T('Destination')),
-                Field('route', label=T('Provider')),
-                Field('call_state', label=T('State'),
-                      requires=IS_IN_SET(calling_status)),
-                Field('server_id', label=T('Server')),
-                format='%(id_call)s', migrate=False)
-
 db.define_table('registered_users',
                 Field('login_account', label=T('Login')),
                 Field('client_type', label=T('Client Type')),
@@ -824,7 +809,21 @@ db.define_table('alerts',
                 Field('amount', 'float', label=T('Amount')),
                 format='%(id)s')
 
-
+db.define_table('current_calls',
+                Field('id_call', label=T('ID Call')),
+                Field('account', label=T('Account')),
+                Field('account_state', label=T('Credit')),
+                Field('ani', label=T('Origin Number')),
+                Field('dialed_number', label=T('Dialed Number')),
+                Field('call_start', label=T('Start Time')),
+                Field('duration', 'time', label=T('Duration')),
+                Field('tariffdesc', label=T('Destination')),
+                Field('route', label=T('Provider')),
+                Field('call_state', label=T('State'),
+                      requires=IS_IN_SET(calling_status)),
+                Field('server_id', label=T('Server')),
+                Field('seller', 'reference sellers', label=T('Seller')),
+                format='%(id_call)s', migrate=False)
 
 #    print values
 #    print id
