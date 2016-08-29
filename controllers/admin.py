@@ -41,18 +41,21 @@ def customers_channels():
         return
     # response.view = 'default.html'
     title = T('Graphics')
-    year = now.year
-    month = now.month - 1 or 12
-    if month == 12:
-        year = now.year - 1
-    day = now.day
-    try:
-        last = datetime.datetime(year, month, day)
-    except:
-        last = datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+    # year = now.year
+    # month = now.month - 1 or 12
+    # if month == 12:
+    #     year = now.year - 1
+    # day = now.day
+    # try:
+    #     last = datetime.datetime(year, month, day)
+    # except:
+    #     last = datetime.datetime(year, month, calendar.monthrange(year, month)[1])
+    today = datetime.datetime.now()
+    last = today - datetime.timedelta(days=1)
     customers = collections.OrderedDict()
     sellers = collections.OrderedDict()
     sales_code = False
+    calling_status['TODOS'] = 'TODOS'
     if sales_user:
         rows = db(db.sellers.related_user == user_id).select(db.customers.id,
                                                              db.customers.name, left=(
@@ -90,15 +93,19 @@ def customers_channels():
         cliente_condition = request.vars.cliente
         if len(cliente_condition) < 1:
             cliente_condition = 'TODOS'
-        vendedor_condition = request.vars.vendedor
-        if len(vendedor_condition) < 1:
-            vendedor_condition = 'TODOS'
+        # vendedor_condition = request.vars.vendedor
+        # if len(vendedor_condition) < 1:
+        #     vendedor_condition = 'TODOS'
         cuenta_condition = request.vars.cuenta
+        state_condicion = request.vars.call_state
+        if len(state_condicion) < 1:
+            state_condicion = 'TODOS'
     else:
         val_start = last
-        val_end = datetime.datetime.now()
+        val_end = today
         cliente_condition = 'TODOS'
         cuenta_condition = ''
+        state_condicion = 'TODOS'
     if sales_user:
         vendedor_condition = sales_code
     else:
@@ -112,6 +119,8 @@ def customers_channels():
         Field('cliente', label=T('Customer'), default=cliente_condition, requires=IS_IN_SET(customers)),
         Field('cuenta', 'string', default=cuenta_condition, label=T('Account')),
         Field('vendedor', label=T('Seller'), default=vendedor_condition, requires=IS_IN_SET(sellers)),
+        Field('call_state', default=state_condicion, label=T('State'),
+              requires=IS_IN_SET(calling_status)),
     )
     if form.process().accepted:
         val_start = form.vars.start_time
@@ -121,7 +130,7 @@ def customers_channels():
         cuenta_condition = form.vars.cuenta
     current_channels = graphics_channels(
         val_start, val_end, 1, cliente_condition,
-        vendedor_condition, cuenta_condition)
+        vendedor_condition, cuenta_condition, state_condicion)
     return dict(form=form, current_channels=current_channels)
 
 

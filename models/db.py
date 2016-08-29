@@ -823,6 +823,8 @@ db.define_table('channels_customers',
                 Field('account', label=T('Account')),
                 Field('server_id', label=T('Server')),
                 Field('seller', 'reference sellers', label=T('Seller')),
+                Field('call_state', label=T('State'),
+                      requires=IS_IN_SET(calling_status)),
                 Field('channels', label=T('Channels')),
                 format='%(id)s')
 
@@ -831,6 +833,8 @@ db.define_table('channels_providers',
                 Field('provider', label=T('Provider')),
                 Field('server_id', label=T('Server')),
                 Field('seller', 'reference sellers', label=T('Seller')),
+                Field('call_state', label=T('State'),
+                      requires=IS_IN_SET(calling_status)),
                 Field('channels', label=T('Channels')),
                 format='%(id)s')
 

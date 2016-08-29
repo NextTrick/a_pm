@@ -296,7 +296,7 @@ def generate_graphics(val_start=None, val_end=None, num_days=30, cliente_conditi
 
 
 def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_condition='TODOS',
-                      vendedor_condition='TODOS', cuenta_condition=''):
+                      vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS'):
     today = datetime.datetime.now()
     last = today - datetime.timedelta(days=num_days)
     if val_start is None:
@@ -308,22 +308,35 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
     rows = db(query).select(orderby=db.channels_customers.id)
     last_row = rows.last()
     last_time = last_row['data_time']
-    query_aux = (db.channels_customers.data_time == last_time)
+    #query_aux = (db.channels_customers.data_time == last_time)
+    query_aux = (db.channels_customers.data_time >= val_start)
     if cliente_condition != 'TODOS':
         query_aux &= (db.channels_customers.customer==cliente_condition)
     if vendedor_condition != 'TODOS':
         query_aux &= (db.channels_customers.seller==vendedor_condition)
+    if state_condition != 'TODOS':
+        query_aux &= (db.channels_customers.call_state==state_condition)
     if len(cuenta_condition) > 1:
         query_aux &= (db.channels_customers.account == cuenta_condition)
         #query += "and cuenta='%s'" % cuenta_condition
     total_channels = db.channels_customers.channels.sum()
-    rows = db(query_aux).select(db.customers.name, total_channels,
-                                left=db.customers.on(db.customers.id == db.channels_customers.customer),
-                                groupby=db.customers.name,
-                                orderby=db.customers.name)
+    rows = db(query_aux).select(db.channels_customers.data_time, total_channels,
+                                groupby=db.channels_customers.data_time,
+                                orderby=db.channels_customers.data_time)
     current_channels = []
     for row in rows:
-        current_channels.append((row['customers.name'],row['SUM(channels_customers.channels)']))
+        data_time = row['channels_customers.data_time']
+        count_channels = row['SUM(channels_customers.channels)']
+        if count_channels is None or count_channels <= 0:
+            continue
+        current_channels.append(('{}'.format(data_time),count_channels))
+    # rows = db(query_aux).select(db.customers.name, total_channels,
+    #                             left=db.customers.on(db.customers.id == db.channels_customers.customer),
+    #                             groupby=db.customers.name,
+    #                             orderby=db.customers.name)
+    # current_channels = []
+    # for row in rows:
+    #     current_channels.append((row['customers.name'],row['SUM(channels_customers.channels)']))
     return current_channels
     # query = """select fecha,sum(intentos),sum(completados),sum(fallados),
     # sum(minutos),sum(costoclientedolsinigv),sum(costoproveedor),

@@ -1,10 +1,9 @@
 {{extend 'new_layout.html'}}
-        {{
-                import random
-        pie_headers = [n[0] for n in current_channels]
-        pie_data = [n[1] for n in current_channels]
-                total_channels = sum(pie_data)
-                color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_channels]
+{{
+import random
+pie_headers = [n[0] for n in current_channels]
+pie_data = [n[1] for n in current_channels]
+color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_channels]
 }}
 <div class="right_col" role="main">
     <div class="row">
@@ -16,6 +15,7 @@
                     <td>Fecha Inicio: {{=form.custom.widget.start_time}}</td>
                     <td>Fecha Fin: {{=form.custom.widget.end_time}}</td>
                     <td>Vendedor: {{=form.custom.widget.vendedor}}</td>
+                    <td>Estado: {{=form.custom.widget.call_state}}</td>
                 </tr>
                 <tr>
                     <td>Cliente: {{=form.custom.widget.cliente}}</td>
@@ -28,46 +28,48 @@
             </table>
         {{=form.custom.end}}
             <br/>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Channels<small>{{=total_channels}}</small></h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="polarArea"></canvas>
-                  </div>
+                    <div class="x_title">
+                        <h2>Channels
+                            <small></small>
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="polarArea"></canvas>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>
 
-        <script src="{{=URL('static','vendors/Chart.js/dist/Chart.min.js')}}"></script>
-        <script>
-      Chart.defaults.global.legend = {
+<script src="{{=URL('static','vendors/Chart.js/dist/Chart.min.js')}}"></script>
+<script>
+    Chart.defaults.global.legend = {
         enabled: false
-      };
-      // PolarArea chart
-      var ctx = document.getElementById("polarArea");
-      var data = {
+    };
+    // PolarArea chart
+    var ctx = document.getElementById("polarArea");
+    var data = {
         datasets: [{
-          data: {{=XML(pie_data)}},
-          backgroundColor: "rgba(38, 185, 154, 0.31)",
-          label: 'Channels'
+            data: {{=XML(pie_data)}},
+            backgroundColor: "rgba(38, 185, 154, 0.31)",
+            label: 'Channels'
         }],
         labels: {{=XML(pie_headers)}}
-      };
+    };
 
-      var polarArea = new Chart(ctx, {
+    var polarArea = new Chart(ctx, {
         data: data,
         type: 'line',
         options: {
-          scale: {
-            ticks: {
-              beginAtZero: true
+            scale: {
+                ticks: {
+                    beginAtZero: true
+                }
             }
-          }
         }
-      });
-        </script>
+    });
+</script>
