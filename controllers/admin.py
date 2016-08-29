@@ -105,22 +105,24 @@ def customers_channels():
         vendedor_condition = 'TODOS'
     val_start = val_start.date()
     val_end = val_end.date()
-    form = SQLFORM.grid(db.channels_customers)
-    form_aux = SQLFORM.factory(
+    #form = SQLFORM.grid(db.channels_customers)
+    form = SQLFORM.factory(
         Field('start_time', 'date', label=T('Start Date'), default=val_start),
         Field('end_time', 'date', label=T('End Date'), default=val_end),
         Field('cliente', label=T('Customer'), default=cliente_condition, requires=IS_IN_SET(customers)),
         Field('cuenta', 'string', default=cuenta_condition, label=T('Account')),
         Field('vendedor', label=T('Seller'), default=vendedor_condition, requires=IS_IN_SET(sellers)),
     )
-    if form_aux.process(formname='factory').accepted:
-        val_start = form_aux.vars.start_time
-        val_end = form_aux.vars.end_time
-        #cliente_condition = form.vars.cliente
-        #vendedor_condition = form.vars.vendedor
-        #cuenta_condition = form.vars.cuenta
-        print val_start, val_end
-    return dict(form=form, form_aux=form_aux)
+    if form.process().accepted:
+        val_start = form.vars.start_time
+        val_end = form.vars.end_time
+        cliente_condition = form.vars.cliente
+        vendedor_condition = form.vars.vendedor
+        cuenta_condition = form.vars.cuenta
+    current_channels = graphics_channels(
+        val_start, val_end, 1, cliente_condition,
+        vendedor_condition, cuenta_condition)
+    return dict(form=form, current_channels=current_channels)
 
 
 @auth.requires_login()
