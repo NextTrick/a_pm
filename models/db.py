@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import socket
+
 hostname = socket.gethostname()
 #########################################################################
 ## This scaffolding model makes your app work on Google App Engine too
@@ -12,9 +13,10 @@ hostname = socket.gethostname()
 
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
-    #db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
-    db = DAL('mysql://integracion:y2KItelvox14@localhost/sige',pool_size=1,check_reserved=['all'], migrate=False)
-    db2 = DAL('mysql://integracion:y2KItelvox14@localhost/integracion',pool_size=1,check_reserved=['all'], migrate=False)
+    # db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
+    db = DAL('mysql://integracion:y2KItelvox14@localhost/sige', pool_size=1, check_reserved=['all'], migrate=False)
+    db2 = DAL('mysql://integracion:y2KItelvox14@localhost/integracion', pool_size=1, check_reserved=['all'],
+              migrate=False)
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     db = DAL('google:datastore')
@@ -52,13 +54,13 @@ crud, service, plugins = Crud(db), Service(), PluginManager()
 now = datetime.datetime.now()
 
 ## create all tables needed by auth if not custom tables
-#auth.define_tables(username=False, signature=False)
+# auth.define_tables(username=False, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-#mail.settings.server = 'logging' or 'smtpout.secureserver.net'
-#mail.settings.sender = 'soporte@itelvox.com'
-#mail.settings.login = 'soporte@itelvox.com:fvp3LJql1'
+# mail.settings.server = 'logging' or 'smtpout.secureserver.net'
+# mail.settings.sender = 'soporte@itelvox.com'
+# mail.settings.login = 'soporte@itelvox.com:fvp3LJql1'
 
 ## configure auth policy
 auth.settings.registration_requires_verification = False
@@ -69,6 +71,7 @@ auth.settings.login_next = URL('index')
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key
 from gluon.contrib.login_methods.rpx_account import use_janrain
+
 use_janrain(auth, filename='private/janrain.key')
 
 #########################################################################
@@ -122,7 +125,6 @@ credits_types = {
     1: T('Charge'),
     2: T('Debit'),
 }
-
 
 invoices_options = {
     0: T('Created'),
@@ -185,7 +187,6 @@ services_options = {
     8: T('Others'),
 }
 
-
 db.define_table('commercial_documents',
                 Field('name', 'string', label=T('Name')),
                 Field('serial', 'string', label=T('Serial')),
@@ -245,7 +246,6 @@ db.define_table('mail_notifications',
                 Field('kind', 'integer', label=T('Kind'),
                       requires=IS_IN_SET(notifications_kinds)),
                 format='%(id)s')
-
 
 db.define_table('business_areas',
                 Field('name', 'string', label=T('Name')),
@@ -320,7 +320,6 @@ db.define_table('registered_users',
                 Field('server_id', label=T('Server')),
                 format='%(id)s', migrate=False)
 
-
 db.define_table('packages',
                 Field('service', 'integer', label=T('Service'),
                       requires=IS_IN_SET(services_options)),
@@ -343,9 +342,9 @@ db.define_table('customers',
                 Field('tax_id', 'string', label=T('Tax ID')),
                 Field('activity_start', 'date', label=T('Activity Start')),
                 Field('web_url', 'string', label=T('Web URL')),
-#                Field('legal_representative', 'string', label=T('Legal Representative')),
+                #                Field('legal_representative', 'string', label=T('Legal Representative')),
                 Field('electronic_file', 'string', label=T('Electronic File')),
-#                Field('currency', 'reference currencies', label=T('Currency')),
+                #                Field('currency', 'reference currencies', label=T('Currency')),
                 Field('account_type', 'integer', label=T('Account Type'),
                       default=0, requires=IS_IN_SET(account_types)),
                 Field('business_area', db.business_areas, label=T('Business Area'),
@@ -384,7 +383,7 @@ db.define_table('accounts',
                 Field('client_type', label=T('Client Type')),
                 Field('invoice_type', label=T('Invoice Type')),
                 Field('sip_proxy', label=T('Proxy')),
-                Field('customer', 'reference customers',label=T('Customer')),
+                Field('customer', 'reference customers', label=T('Customer')),
                 Field('seller', label=T('Seller')),
                 format='%(id_call)s', migrate=False)
 
@@ -424,7 +423,7 @@ db.define_table('customers_contacts',
                       requires=IS_EMPTY_OR(IS_IN_DB(db, db.roles, '%(name)s'))),
                 Field('document_id', 'string', label=T('DNI')),
                 Field('name', 'string', label=T('Full Name')),
-#                Field('phone', 'string', label=T('Phone')),
+                #                Field('phone', 'string', label=T('Phone')),
                 Field('email', 'string', label=T('Email')),
                 Field('skype', 'string', label=T('Skype')),
                 Field('facebook', 'string', label=T('Facebook')),
@@ -445,8 +444,6 @@ db.define_table('customers_contacts_phones',
                 Field('extension', 'string', label=T('Extension')),
                 Field('main', 'boolean', label=T('Main')),
                 format='%(name)s')
-
-
 
 db.define_table('customers_contracts',
                 Field('register_time', 'datetime', label=T('Register Time'),
@@ -473,7 +470,6 @@ db.define_table('customers_contracts_documents',
                 Field('annotation', 'text', label=T('Annotation')),
                 format='%(name)s')
 
-
 db.define_table('customers_rates',
                 Field('register_time', 'datetime', label=T('Register Time'),
                       default=now, writable=False),
@@ -496,9 +492,9 @@ db.define_table('customers_services',
                 Field('service', 'integer', label=T('Service'),
                       requires=IS_IN_SET(services_options)),
                 Field('seller', db.sellers, label=T('Seller'),
-                     requires=IS_EMPTY_OR(IS_IN_DB(db, db.sellers, '%(name)s'))),
+                      requires=IS_EMPTY_OR(IS_IN_DB(db, db.sellers, '%(name)s'))),
                 Field('package', 'reference packages', label=T('Package')),
-#                Field('name', 'string', label=T('Name')),
+                #                Field('name', 'string', label=T('Name')),
                 Field('start_date', 'date', label=T('Start Date')),
                 Field('end_date', 'date', label=T('End Date')),
                 Field('billing_period', 'reference billing_periods',
@@ -527,7 +523,7 @@ db.define_table('customers_credits',
                 Field('register_time', 'datetime', label=T('Date'),
                       default=now, writable=False),
                 Field('credit_type', 'integer', label=T('Type'), default=1,
-                        requires=IS_IN_SET(credits_types)),
+                      requires=IS_IN_SET(credits_types)),
                 Field('customer', 'reference customers', label=T('Customer')),
                 Field('service', 'integer', label=T('Service'),
                       requires=IS_IN_SET(services_options)),
@@ -582,7 +578,7 @@ db.define_table('invoices',
                 Field('customer_address', 'reference customers_addresses', label=T('Address')),
                 Field('start_time', 'date', label=T('Starting Period')),
                 Field('end_time', 'date', label=T('Ending Period')),
-#                Field('service', 'integer', label=T('Service'), requires=IS_IN_SET(services_options)),
+                #                Field('service', 'integer', label=T('Service'), requires=IS_IN_SET(services_options)),
                 Field('currency', 'reference currencies', label=T('Currency')),
                 Field('sub_total', 'float', label=T('Sub Total')),
                 Field('discount', 'float', label=T('Discount'), default=0),
@@ -608,7 +604,7 @@ db.define_table('invoices_details',
                 Field('end_time', 'date', label=T('End Time')),
                 Field('sub_total', 'float', label=T('Sub Total')),
                 Field('discount', 'float', label=T('Discount'), default=0),
-#                Field('service', 'integer', label=T('Service'), requires=IS_IN_SET(services_options)),
+                #                Field('service', 'integer', label=T('Service'), requires=IS_IN_SET(services_options)),
                 Field('notes', 'string', label=T('Notes')),
                 Field('status', 'integer', label=T('Status'), default=0,
                       requires=IS_IN_SET(invoices_status)),
@@ -625,8 +621,6 @@ db.define_table('invoices_collection',
                 Field('status', 'integer', label=T('Status'), default=0,
                       requires=IS_IN_SET(status_options)),
                 format='%(id)s')
-
-
 
 db.define_table('whitelist_destinations',
                 Field('register_time', 'datetime', label=T('Register Time'),
@@ -748,7 +742,6 @@ db.define_table('providers_contracts_documents',
                 Field('annotation', 'text', label=T('Annotation')),
                 format='%(name)s')
 
-
 db.define_table('services_configurations',
                 Field('register_time', 'datetime', label=T('Register Time'),
                       default=now, writable=False),
@@ -764,7 +757,6 @@ db.define_table('services_configurations',
                       requires=IS_EMPTY_OR(IS_IN_DB(db, db.currencies, '%(name)s'))),
                 Field('rate_cost', 'float', label=T('Cost'), default=0),
                 format='%(id)s')
-
 
 db.define_table('tickets',
                 Field('register_time', 'datetime', label=T('Register Time'),
@@ -803,11 +795,11 @@ db.define_table('mail_queue',
 db.define_table('alerts',
                 Field('register_time', 'datetime', label=T('Register Time'),
                       default=now),
-                #Field('customer', 'reference customers', label=T('Customer')),
+                # Field('customer', 'reference customers', label=T('Customer')),
                 Field('customer_service', 'reference customers_services',
                       label=T('Customer Service')),
                 Field('amount', 'float', label=T('Amount')),
-                format='%(id)s')
+                format='%(id)s', migrate=False)
 
 db.define_table('current_calls',
                 Field('id_call', label=T('ID Call')),
@@ -825,56 +817,57 @@ db.define_table('current_calls',
                 Field('seller', 'reference sellers', label=T('Seller')),
                 format='%(id_call)s', migrate=False)
 
-#    print values
-#    print id
+db.define_table('channels_customers',
+                Field('data_time', 'datetime', label=T('Data Time')),
+                Field('customer', 'reference customers', label=T('Customer')),
+                Field('account', label=T('Account')),
+                Field('server_id', label=T('Server')),
+                Field('seller', 'reference sellers', label=T('Seller')),
+                Field('channels', label=T('Channels')),
+                format='%(id)s')
 
-    #print vals
-    #print "ccc---------",id
-
-# def update_rates(id, vals):
-#     status_time = now
-#     elems = {'status_time':status_time}
-#     print id, vals
-#     status = db(id).update(**elems)
-#     # print vals
-#     # ticket_id = vals.select().first().id
-#     # vals = dict(id)
-#     # print vals
-#     # print "ccc---------",id
+db.define_table('channels_providers',
+                Field('data_time', 'datetime', label=T('Data Time')),
+                Field('provider', label=T('Provider')),
+                Field('server_id', label=T('Server')),
+                Field('seller', 'reference sellers', label=T('Seller')),
+                Field('channels', label=T('Channels')),
+                format='%(id)s')
 
 
-#db.current_calls.call_state.represent = lambda  value, row: None if value is None else calling_status[value]
 db.accounts.account.requires = IS_NOT_IN_DB(db, 'accounts.account')
 db.customers.tax_id.requires = IS_NOT_IN_DB(db, 'customers.tax_id')
 db.customers_services.did.requires = IS_EMPTY_OR(IS_NOT_IN_DB(db, 'customers_services.did'))
-db.customers.status.represent = lambda  value, row: None if value is None else status_options[value]
-db.customers.commercial_document.represent = lambda  value, row: None if value is None else name_data(db.commercial_documents, value)
-db.customers.business_area.represent = lambda  value, row: None if value is None else name_data(db.business_areas, value)
+db.customers.status.represent = lambda value, row: None if value is None else status_options[value]
+db.customers.commercial_document.represent = lambda value, row: None if value is None else name_data(
+    db.commercial_documents, value)
+db.customers.business_area.represent = lambda value, row: None if value is None else name_data(db.business_areas, value)
 db.customers.currency.represent = lambda value, row: None if value is None else name_data(db.currencies, value)
-db.customers.payment_mean.represent = lambda value, row: None if value is None else name_data(db.payment_means  , value)
-db.customers.account_type.represent = lambda  value, row: None if value is None else account_types[value]
-db.customers_services.service.represent = lambda  value, row: None if value is None else services_options[int(value)]
+db.customers.payment_mean.represent = lambda value, row: None if value is None else name_data(db.payment_means, value)
+db.customers.account_type.represent = lambda value, row: None if value is None else account_types[value]
+db.customers_services.service.represent = lambda value, row: None if value is None else services_options[int(value)]
 db.customers_services.currency.represent = lambda value, row: None if value is None else name_data(db.currencies, value)
 db.customers_services.seller.represent = lambda value, row: None if value is None else name_data(db.sellers, value)
-db.packages.service.represent = lambda  value, row: None if value is None else services_options[int(value)]
+db.packages.service.represent = lambda value, row: None if value is None else services_options[int(value)]
 db.auth_user.customer.represent = lambda value, row: None if value is None else name_data(db.customers, value)
-db.tickets.area.represent = lambda  value, row: None if value is None else name_data(db.areas, value)
-db.tickets.service.represent = lambda  value, row: None if value is None else services_options[int(value)]
-db.tickets.status.represent = lambda  value, row: None if value is None else status_tickets[value]
+db.tickets.area.represent = lambda value, row: None if value is None else name_data(db.areas, value)
+db.tickets.service.represent = lambda value, row: None if value is None else services_options[int(value)]
+db.tickets.status.represent = lambda value, row: None if value is None else status_tickets[value]
 db.tickets.customer.represent = lambda value, row: None if value is None else name_data(db.customers, value)
 db.tickets._after_update.append(lambda values, id: send_mail(values, id))
 db.tickets_workflow._after_insert.append(lambda values, id: send_mail(values, id))
-db.tickets_workflow.auxiliar_data.represent = lambda value,row: A(T('Download'), _href=URL('download', args=value))
-#db.customers_services._after_insert.append(lambda values, id: update_rates(values, id))
-#db.invoices_collection.invoice.represent = lambda value, row: None if value is None else name_data(db.invoices, value)
-db.customers_credits.credit_type.represent = lambda  value, row: None if value is None else credits_types[int(value)]
-db.customers_credits.condition_status.represent = lambda  value, row: None if value is None else invoices_options[int(value)]
-db.customers_credits.status.represent = lambda  value, row: None if value is None else credits_options[int(value)]
+db.tickets_workflow.auxiliar_data.represent = lambda value, row: A(T('Download'), _href=URL('download', args=value))
+# db.customers_services._after_insert.append(lambda values, id: update_rates(values, id))
+# db.invoices_collection.invoice.represent = lambda value, row: None if value is None else name_data(db.invoices, value)
+db.customers_credits.credit_type.represent = lambda value, row: None if value is None else credits_types[int(value)]
+db.customers_credits.condition_status.represent = lambda value, row: None if value is None else invoices_options[
+    int(value)]
+db.customers_credits.status.represent = lambda value, row: None if value is None else credits_options[int(value)]
 db.customers_credits._after_insert.append(lambda values, id: insert_rates(values, id))
-#db.customers_credits._after_update.append(lambda values, id: prepaid_invoice(id, values))
-#db.customers_charges.status.represent = lambda  value, row: None if value is None else credits_options[int(value)]
-db.invoices.condition_status.represent = lambda  value, row: None if value is None else invoices_options[value]
-db.invoices.status.represent = lambda  value, row: None if value is None else invoices_status[value]
-db.invoices_details.customer_service.represent = lambda  value, row: None if value is None else complex_data(value)
-db.invoices_details.status.represent = lambda  value, row: None if value is None else invoices_status[value]
+# db.customers_credits._after_update.append(lambda values, id: prepaid_invoice(id, values))
+# db.customers_charges.status.represent = lambda  value, row: None if value is None else credits_options[int(value)]
+db.invoices.condition_status.represent = lambda value, row: None if value is None else invoices_options[value]
+db.invoices.status.represent = lambda value, row: None if value is None else invoices_status[value]
+db.invoices_details.customer_service.represent = lambda value, row: None if value is None else complex_data(value)
+db.invoices_details.status.represent = lambda value, row: None if value is None else invoices_status[value]
 db.invoices._after_update.append(lambda values, id: invoice_update(id, values))

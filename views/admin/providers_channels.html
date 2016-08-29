@@ -1,0 +1,144 @@
+{{extend 'new_layout.html'}}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(Costo);
+      google.setOnLoadCallback(Consumo);
+      google.setOnLoadCallback(Minutos);
+      google.setOnLoadCallback(Llamadas);
+      google.setOnLoadCallback(Ganancia);
+      google.setOnLoadCallback(Rentabilidad);
+      function Costo() {
+        var data = google.visualization.arrayToDataTable(
+            {{=XML(costos)}}
+        );
+
+        var options = {
+          title: 'Costo',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('costo'));
+        chart.draw(data, options);
+      }
+      function Consumo() {
+        var data = google.visualization.arrayToDataTable(
+        {{=XML(consumo)}}
+        );
+
+        var options = {
+          title: 'Consumo',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('consumo'));
+        chart.draw(data, options);
+      }
+      function Minutos() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(minutos)}}
+        );
+
+        var options = {
+          title: 'Minutos',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('minutos'));
+        chart.draw(data, options);
+      }
+      function Llamadas() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(llamadas)}}
+        );
+
+        var options = {
+          title: 'Llamadas',
+          series: [{color: 'blue', lineWidth: 1}, {color: 'orange', lineWidth: 1}, {color: 'red', lineWidth: 1}],
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('llamadas'));
+        chart.draw(data, options);
+      }
+      function Ganancia() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(ganancia)}}
+        );
+
+        var options = {
+          title: 'Ganancia',
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('ganancia'));
+        chart.draw(data, options);
+      }
+      function Rentabilidad() {
+        var data = google.visualization.arrayToDataTable(
+                {{=XML(rentabilidad)}}
+        );
+
+        var options = {
+          title: 'Rentabilidad',
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('rentabilidad'));
+        chart.draw(data, options);
+      }
+    </script>
+<h1>Graficos</h1>
+{{=form.custom.begin}}
+<table>
+    <tr>
+        <td>Fecha Inicio: {{=form.custom.widget.start_time}}</td>
+        <td>Fecha Fin: {{=form.custom.widget.end_time}}</td>
+        <td>Vendedor: {{=form.custom.widget.vendedor}}</td>
+    </tr>
+    <tr>
+        <td>Cliente: {{=form.custom.widget.cliente}}</td>
+        <td>Cuenta: {{=form.custom.widget.cuenta}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>{{=form.custom.submit}}</td>
+    </tr>
+</table>
+{{=form.custom.end}}
+
+<table>
+<tr>
+    <td>
+        <div id="costo" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="consumo" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="minutos" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="llamadas" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div id="ganancia" style="width: 400px; height: 300px;"></div>
+    </td>
+    <td>
+        <div id="rentabilidad" style="width: 400px; height: 300px;"></div>
+    </td>
+</tr>
+</table>
+                    </div>
+    </div>
+</div>
