@@ -86,7 +86,9 @@
                 <ul class="nav child_menu">
                     <li><a href="{{=URL('admin', 'graphics')}}"><i class="fa fa-area-chart"></i>{{=T('Graphics')}}</a></li>
                     <li><a href="{{=URL('admin', 'customers_channels')}}"><i class="fa fa-signal"></i>{{=T('Customers Channels')}}</a></li>
+                    {{if auth.has_membership(role='root'):}}
                     <li><a href="{{=URL('admin', 'providers_channels')}}"><i class="fa fa-signal"></i>{{=T('Providers Channels')}}</a></li>
+                    {{pass}}
                     <li><a href="{{=URL('admin', 'cdr_reports')}}"><i class="fa fa-volume-control-phone"></i>{{=T('CDRs')}}</a></li>
                     <li><a href="{{=URL('admin', 'admin_reports')}}"><i class="fa fa-search"></i>{{=T('Administration')}}</a></li>
                     <li><a href="{{=URL('status', 'credits')}}"><i class="fa fa-credit-card"></i>{{=T('Payments')}}</a></li>

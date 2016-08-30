@@ -32,7 +32,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Channels
-                            <small></small>
+                            <small>(Calls)</small>
                         </h2>
                         <div class="clearfix"></div>
                     </div>
@@ -45,6 +45,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
     </div>
 </div>
 
+        <script src="{{=URL('static','js/moment.min.js')}}"></script>
 <script src="{{=URL('static','vendors/Chart.js/dist/Chart.min.js')}}"></script>
 <script>
     Chart.defaults.global.legend = {
@@ -55,21 +56,66 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
     var data = {
         datasets: [{
             data: {{=XML(pie_data)}},
-            backgroundColor: "rgba(38, 185, 154, 0.31)",
+            backgroundColor: "rgba(0, 157, 224, 0.4)",
+            //backgroundColor: "#009DE0",
+            pointBorderColor: "rgba(26, 26, 26, 0.4)",
+            //pointBackgroundColor: "#1A1A1A",
             label: 'Channels'
         }],
-        labels: {{=XML(pie_headers)}}
+        labels: {{=XML(pie_headers)}},
     };
 
     var polarArea = new Chart(ctx, {
         data: data,
         type: 'line',
         options: {
-            scale: {
-                ticks: {
-                    beginAtZero: true
-                }
-            }
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Calls'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Times'
+                    },
+                    ticks:{
+                        maxTicksLimit: 2
+                    }
+//                type: 'time',
+//                time: {
+//                    displayFormats: {
+//                        hour: 'h'
+//                    }
+//                }
+
+
+                }]
+            },
+//            legend: {
+//                display: true,
+////                labels: {
+////                    fontColor: 'rgb(255, 99, 132)'
+////                }
+//            }
+
+//            scales: {
+//                ticks: {
+//                    beginAtZero: true
+//                }
+//            },
+//            title: {
+//                display: false,
+//                text: 'Custom Chart Title'
+//            },
+//            legend: {
+//                display: false,
+//                labels: {
+//                    fontColor: 'rgb(255, 99, 132)'
+//                }
+//            }
         }
     });
 </script>

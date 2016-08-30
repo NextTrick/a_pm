@@ -330,44 +330,39 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
         if count_channels is None or count_channels <= 0:
             continue
         current_channels.append((data_time[1], count_channels))
-    # rows = db(query_aux).select(db.customers.name, total_channels,
-    #                             left=db.customers.on(db.customers.id == db.channels_customers.customer),
-    #                             groupby=db.customers.name,
-    #                             orderby=db.customers.name)
-    # current_channels = []
-    # for row in rows:
-    #     current_channels.append((row['customers.name'],row['SUM(channels_customers.channels)']))
     return current_channels
-    # query = """select fecha,sum(intentos),sum(completados),sum(fallados),
-    # sum(minutos),sum(costoclientedolsinigv),sum(costoproveedor),
-    # sum(ganancia),ifnull(sum(costoclientedolsinigv-costoproveedor)/sum(costoproveedor)*100,0),
-    # cliente,cuenta,vendedor
-    # from resumen_cuenta where fecha between '%s' and '%s' """ % (val_start, val_end)
-    # if cliente_condition != 'TODOS':
-    #     query += "and cliente='%s' " % cliente_condition
-    # if vendedor_condition != 'TODOS':
-    #     query += "and vendedor='%s' " % vendedor_condition
-    # if len(cuenta_condition) > 1:
-    #     query += "and cuenta='%s'" % cuenta_condition
-    # query += "group by fecha;"
-    # data = db2.executesql(query)
-    # day_header = []
-    # costos_data = []
-    # consumos_data = []
-    # minutos_data = []
-    # llamadas_intentos_data = []
-    # llamadas_completados_data = []
-    # llamadas_fallados_data = []
-    # for line in data:
-    #     day_header.append('%s' % line[0])
-    #     costos_data.append(round(float(line[6]), 2))
-    #     consumos_data.append(round(float(line[5]), 2))
-    #     minutos_data.append(round(float(line[4]), 2))
-    #     llamadas_intentos_data.append(int(line[1]))
-    #     llamadas_completados_data.append(int(line[2]))
-    #     llamadas_fallados_data.append(int(line[3]))
-    # costos = [day_header, costos_data]
-    # consumos = [day_header, consumos_data]
-    # minutos = [day_header, minutos_data]
-    # llamadas = [day_header, llamadas_intentos_data, llamadas_completados_data, llamadas_fallados_data]
-    # return costos, consumos, minutos, llamadas
+
+def graphics_provider_channels(val_start=None, val_end=None, num_days=1,
+                          vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS'):
+        today = datetime.datetime.now()
+        last = today - datetime.timedelta(days=num_days)
+        if val_start is None:
+            val_start = last
+            val_end = today
+        if val_end is None:
+            val_end = today
+        # query = (db.channels_customers.id > 0)
+        # rows = db(query).select(orderby=db.channels_customers.id)
+        # last_row = rows.last()
+        # last_time = last_row['data_time']
+        # query_aux = (db.channels_customers.data_time == last_time)
+        query_aux = ((db.channels_providers.data_time >= val_start) & (db.channels_providers.data_time <= val_end))
+        if vendedor_condition != 'TODOS':
+            query_aux &= (db.channels_providers.seller == vendedor_condition)
+        if state_condition != 'TODOS':
+            query_aux &= (db.channels_providers.call_state == state_condition)
+        if len(cuenta_condition) > 1:
+            query_aux &= (db.channels_providers.provider.contains(cuenta_condition))
+            # query += "and cuenta='%s'" % cuenta_condition
+        total_channels = db.channels_providers.channels.sum()
+        rows = db(query_aux).select(db.channels_providers.data_time, total_channels,
+                                    groupby=db.channels_providers.data_time,
+                                    orderby=db.channels_providers.data_time)
+        current_channels = []
+        for row in rows:
+            data_time = '{}'.format(row['channels_providers.data_time']).split(' ')
+            count_channels = row['SUM(channels_providers.channels)']
+            if count_channels is None or count_channels <= 0:
+                continue
+            current_channels.append((data_time[1], count_channels))
+        return current_channels
