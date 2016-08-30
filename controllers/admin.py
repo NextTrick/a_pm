@@ -85,11 +85,14 @@ def customers_channels():
         sellers['TODOS'] = 'TODOS'
     if len(request.vars) > 0:
         try:
-            val_start = datetime.datetime.strptime(request.vars.start_time, '%d/%m/%Y')
-            val_end = datetime.datetime.strptime(request.vars.end_time, '%d/%m/%Y')
+            val_start = datetime.datetime.strptime(request.vars.start_time, '%d/%m/%Y %H:%M:%S')
+            val_end = datetime.datetime.strptime(request.vars.end_time, '%d/%m/%Y %H:%M:%S')
         except:
-            val_start = datetime.datetime.strptime(request.vars.start_time, '%Y-%m-%d')
-            val_end = datetime.datetime.strptime(request.vars.end_time, '%Y-%m-%d')
+            val_start = datetime.datetime.strptime(request.vars.start_time, '%Y-%m-%d %H:%M:%S')
+            val_end = datetime.datetime.strptime(request.vars.end_time, '%Y-%m-%d %H:%M:%S')
+        #val_start = request.vars.start_time
+        #val_end = request.vars.end_time
+        #print val_start, val_end, type(val_end)
         cliente_condition = request.vars.cliente
         if len(cliente_condition) < 1:
             cliente_condition = 'TODOS'
@@ -110,12 +113,12 @@ def customers_channels():
         vendedor_condition = sales_code
     else:
         vendedor_condition = 'TODOS'
-    val_start = val_start.date()
-    val_end = val_end.date()
+    val_start = val_start
+    val_end = val_end
     #form = SQLFORM.grid(db.channels_customers)
     form = SQLFORM.factory(
-        Field('start_time', 'date', label=T('Start Date'), default=val_start),
-        Field('end_time', 'date', label=T('End Date'), default=val_end),
+        Field('start_time', 'datetime', label=T('Start Time'), default=val_start),
+        Field('end_time', 'datetime', label=T('End Time'), default=val_end),
         Field('cliente', label=T('Customer'), default=cliente_condition, requires=IS_IN_SET(customers)),
         Field('cuenta', 'string', default=cuenta_condition, label=T('Account')),
         Field('vendedor', label=T('Seller'), default=vendedor_condition, requires=IS_IN_SET(sellers)),

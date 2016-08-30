@@ -300,16 +300,16 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
     today = datetime.datetime.now()
     last = today - datetime.timedelta(days=num_days)
     if val_start is None:
-        val_start = last.date()
-        val_end = today.date()
+        val_start = last
+        val_end = today
     if val_end is None:
-        val_end = today.date()
-    query = (db.channels_customers.id > 0)
-    rows = db(query).select(orderby=db.channels_customers.id)
-    last_row = rows.last()
-    last_time = last_row['data_time']
+        val_end = today
+    #query = (db.channels_customers.id > 0)
+    #rows = db(query).select(orderby=db.channels_customers.id)
+    #last_row = rows.last()
+    #last_time = last_row['data_time']
     #query_aux = (db.channels_customers.data_time == last_time)
-    query_aux = (db.channels_customers.data_time >= val_start)
+    query_aux = ((db.channels_customers.data_time >= val_start) & (db.channels_customers.data_time <= val_end))
     if cliente_condition != 'TODOS':
         query_aux &= (db.channels_customers.customer==cliente_condition)
     if vendedor_condition != 'TODOS':
@@ -325,11 +325,11 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
                                 orderby=db.channels_customers.data_time)
     current_channels = []
     for row in rows:
-        data_time = row['channels_customers.data_time']
+        data_time = '{}'.format(row['channels_customers.data_time']).split(' ')
         count_channels = row['SUM(channels_customers.channels)']
         if count_channels is None or count_channels <= 0:
             continue
-        current_channels.append(('{}'.format(data_time),count_channels))
+        current_channels.append((data_time[1], count_channels))
     # rows = db(query_aux).select(db.customers.name, total_channels,
     #                             left=db.customers.on(db.customers.id == db.channels_customers.customer),
     #                             groupby=db.customers.name,
