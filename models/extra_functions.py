@@ -296,7 +296,8 @@ def generate_graphics(val_start=None, val_end=None, num_days=30, cliente_conditi
 
 
 def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_condition='TODOS',
-                      vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS'):
+                      vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS',
+                      provider_condition=''):
     today = datetime.datetime.now()
     last = today - datetime.timedelta(days=num_days)
     if val_start is None:
@@ -304,11 +305,6 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
         val_end = today
     if val_end is None:
         val_end = today
-    #query = (db.channels_customers.id > 0)
-    #rows = db(query).select(orderby=db.channels_customers.id)
-    #last_row = rows.last()
-    #last_time = last_row['data_time']
-    #query_aux = (db.channels_customers.data_time == last_time)
     query_aux = ((db.channels_customers.data_time >= val_start) & (db.channels_customers.data_time <= val_end))
     if cliente_condition != 'TODOS':
         query_aux &= (db.channels_customers.customer==cliente_condition)
@@ -318,7 +314,8 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
         query_aux &= (db.channels_customers.call_state==state_condition)
     if len(cuenta_condition) > 1:
         query_aux &= (db.channels_customers.account == cuenta_condition)
-        #query += "and cuenta='%s'" % cuenta_condition
+    if len(provider_condition) > 1:
+        query_aux &= (db.channels_customers.provider == provider_condition)
     total_channels = db.channels_customers.channels.sum()
     rows = db(query_aux).select(db.channels_customers.data_time, total_channels,
                                 groupby=db.channels_customers.data_time,
@@ -329,40 +326,60 @@ def graphics_channels(val_start=None, val_end=None, num_days=1, cliente_conditio
         count_channels = row['SUM(channels_customers.channels)']
         if count_channels is None or count_channels <= 0:
             continue
-        current_channels.append((data_time[1], count_channels))
+        current_channels.append((data_time[1][:-3], count_channels))
     return current_channels
 
-def graphics_provider_channels(val_start=None, val_end=None, num_days=1,
-                          vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS'):
-        today = datetime.datetime.now()
-        last = today - datetime.timedelta(days=num_days)
-        if val_start is None:
-            val_start = last
-            val_end = today
-        if val_end is None:
-            val_end = today
-        # query = (db.channels_customers.id > 0)
-        # rows = db(query).select(orderby=db.channels_customers.id)
-        # last_row = rows.last()
-        # last_time = last_row['data_time']
-        # query_aux = (db.channels_customers.data_time == last_time)
-        query_aux = ((db.channels_providers.data_time >= val_start) & (db.channels_providers.data_time <= val_end))
-        if vendedor_condition != 'TODOS':
-            query_aux &= (db.channels_providers.seller == vendedor_condition)
-        if state_condition != 'TODOS':
-            query_aux &= (db.channels_providers.call_state == state_condition)
-        if len(cuenta_condition) > 1:
-            query_aux &= (db.channels_providers.provider.contains(cuenta_condition))
-            # query += "and cuenta='%s'" % cuenta_condition
-        total_channels = db.channels_providers.channels.sum()
-        rows = db(query_aux).select(db.channels_providers.data_time, total_channels,
-                                    groupby=db.channels_providers.data_time,
-                                    orderby=db.channels_providers.data_time)
-        current_channels = []
-        for row in rows:
-            data_time = '{}'.format(row['channels_providers.data_time']).split(' ')
-            count_channels = row['SUM(channels_providers.channels)']
-            if count_channels is None or count_channels <= 0:
-                continue
-            current_channels.append((data_time[1], count_channels))
-        return current_channels
+
+def graphics_provider_channels(val_start=None, val_end=None, num_days=1, cliente_condition='TODOS',
+                      vendedor_condition='TODOS', cuenta_condition='', state_condition='TODOS',
+                      provider_condition=''):
+    today = datetime.datetime.now()
+    last = today - datetime.timedelta(days=num_days)
+    if val_start is None:
+        val_start = last
+        val_end = today
+    if val_end is None:
+        val_end = today
+    query_aux = ((db.channels_customers.data_time >= val_start) & (db.channels_customers.data_time <= val_end))
+    if cliente_condition != 'TODOS':
+        query_aux &= (db.channels_customers.customer==cliente_condition)
+    if vendedor_condition != 'TODOS':
+        query_aux &= (db.channels_customers.seller==vendedor_condition)
+    if state_condition != 'TODOS':
+        query_aux &= (db.channels_customers.call_state==state_condition)
+    if len(cuenta_condition) > 1:
+        query_aux &= (db.channels_customers.account == cuenta_condition)
+    if len(provider_condition) > 1:
+        query_aux &= (db.channels_customers.provider == provider_condition)
+    total_channels = db.channels_customers.channels.sum()
+    rows = db(query_aux).select(db.channels_customers.data_time, db.channels_customers.provider, total_channels,
+                                groupby=db.channels_customers.data_time|db.channels_customers.provider,
+                                orderby=db.channels_customers.data_time|db.channels_customers.provider)
+    current_channels = []
+    data = {}
+    time_headers = []
+    for row in rows:
+        data_time = '{}'.format(row['channels_customers.data_time'])
+        provider = '{}'.format(row['channels_customers.provider'])
+        count_channels = row['SUM(channels_customers.channels)']
+        if count_channels is None or count_channels <= 0:
+            continue
+        #data.setdefault(provider, []).append((data_time,count_channels))
+        data.setdefault(provider, {}).setdefault(data_time, count_channels)
+        if data_time not in time_headers:
+            time_headers.append(data_time)
+        current_channels.append((data_time, count_channels))
+    #print data
+    #print time_headers
+    for time in time_headers:
+        for provider in data:
+            if time not in data[provider]:
+                data[provider][time] = 0
+    new_data = {}
+    for time in time_headers:
+        for provider in data:
+            new_data.setdefault(provider, []).append(data[provider][time])
+    ntime_head = []
+    for time in time_headers:
+        ntime_head.append(time.split(' ')[1][:-3])
+    return new_data, ntime_head

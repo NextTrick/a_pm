@@ -45,8 +45,8 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
     </div>
 </div>
 
-        <script src="{{=URL('static','js/moment.min.js')}}"></script>
-<script src="{{=URL('static','vendors/Chart.js/dist/Chart.min.js')}}"></script>
+<!--       <script src="{{=URL('static','js/moment.min.js')}}"></script>-->
+<script src="{{=URL('static','vendors/Chart.js/dist/Chart.bundle.min.js')}}"></script>
 <script>
     Chart.defaults.global.legend = {
         enabled: false
@@ -57,8 +57,11 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
         datasets: [{
             data: {{=XML(pie_data)}},
             backgroundColor: "rgba(0, 157, 224, 0.4)",
+            pointRadius: 0,
+            //pointBorderColor: "rgba(0, 157, 224, 0.4)",
+            //pointBackgroundColor: "rgba(0, 157, 224, 0.4)",
             //backgroundColor: "#009DE0",
-            pointBorderColor: "rgba(26, 26, 26, 0.4)",
+            //pointBorderColor: "rgba(26, 26, 26, 0.4)",
             //pointBackgroundColor: "#1A1A1A",
             label: 'Channels'
         }],
@@ -77,21 +80,20 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                     }
                 }],
                 xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Times'
+//                    scaleLabel: {
+//                        display: true,
+//                        labelString: 'Times'
+//                    },
+                    ticks: {
+                        maxTicksLimit: 24
                     },
-                    ticks:{
-                        maxTicksLimit: 2
+//                    type: 'time',
+                    time: {
+                        unit: 'hour',
+                        displayFormats: {
+                            hour: 'h'
+                        }
                     }
-//                type: 'time',
-//                time: {
-//                    displayFormats: {
-//                        hour: 'h'
-//                    }
-//                }
-
-
                 }]
             },
 //            legend: {

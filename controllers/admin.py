@@ -138,6 +138,10 @@ def customers_channels():
 @auth.requires_membership('root')
 def providers_channels():
     user_id = auth.user.id
+    sales_user = auth.has_membership(role='sales')
+    root_user = auth.has_membership(role='root')
+    if root_user is False and sales_user is False:
+        return
     title = T('Graphics')
     today = datetime.datetime.now()
     last = today - datetime.timedelta(days=1)
@@ -145,17 +149,32 @@ def providers_channels():
     sellers = collections.OrderedDict()
     sales_code = False
     calling_status['TODOS'] = 'TODOS'
-    rows = db(db.customers.id > 0).select(db.customers.id,
-                                          db.customers.name, orderby=db.customers.name)
-    for row in rows:
-        customers[row.id] = "%s" % (row.name)
-    # customers = sorted(customers.items(), key=lambda x: customers[x])
-    customers['TODOS'] = 'TODOS'
-    rows = db(db.sellers.id > 0).select(db.sellers.id,
-                                        db.sellers.name, orderby=db.sellers.name)
-    for row in rows:
-        sellers[row.id] = "%s" % (row.name)
-    sellers['TODOS'] = 'TODOS'
+    if sales_user:
+        rows = db(db.sellers.related_user == user_id).select(db.customers.id,
+                                                             db.customers.name, left=(
+                db.customers.on(db.customers.id == db.customers_sellers.customer),
+                db.sellers.on(db.sellers.id == db.customers_sellers.seller)
+            ),
+                                                             orderby=db.customers.name)
+        for row in rows:
+            customers[row.id] = "%s" % (row.name)
+        customers['TODOS'] = 'TODOS'
+        rows = db(db.sellers.related_user == user_id).select(db.sellers.id,
+                                                             db.sellers.name, orderby=db.sellers.name)
+        for row in rows:
+            sellers[row.id] = "%s" % (row.name)
+            sales_code = row.id
+    else:
+        rows = db(db.customers.id > 0).select(db.customers.id,
+                                              db.customers.name, orderby=db.customers.name)
+        for row in rows:
+            customers[row.id] = "%s" % (row.name)
+        customers['TODOS'] = 'TODOS'
+        rows = db(db.sellers.id > 0).select(db.sellers.id,
+                                            db.sellers.name, orderby=db.sellers.name)
+        for row in rows:
+            sellers[row.id] = "%s" % (row.name)
+        sellers['TODOS'] = 'TODOS'
     if len(request.vars) > 0:
         try:
             val_start = datetime.datetime.strptime(request.vars.start_time, '%d/%m/%Y %H:%M:%S')
@@ -163,26 +182,35 @@ def providers_channels():
         except:
             val_start = datetime.datetime.strptime(request.vars.start_time, '%Y-%m-%d %H:%M:%S')
             val_end = datetime.datetime.strptime(request.vars.end_time, '%Y-%m-%d %H:%M:%S')
+        cliente_condition = request.vars.cliente
+        if len(cliente_condition) < 1:
+            cliente_condition = 'TODOS'
         vendedor_condition = request.vars.vendedor
         if len(vendedor_condition) < 1:
              vendedor_condition = 'TODOS'
-        cuenta_condition = request.vars.proveedor
+        cuenta_condition = request.vars.cuenta
+        proveedor_condition = request.vars.proveedor
         state_condicion = request.vars.call_state
         if len(state_condicion) < 1:
             state_condicion = 'TODOS'
     else:
         val_start = last
         val_end = today
+        cliente_condition = 'TODOS'
         cuenta_condition = ''
         state_condicion = 'TODOS'
         vendedor_condition = 'TODOS'
+        proveedor_condition = ''
+    if sales_user:
+        vendedor_condition = sales_code
     val_start = val_start
     val_end = val_end
-    #form = SQLFORM.grid(db.channels_customers)
     form = SQLFORM.factory(
         Field('start_time', 'datetime', label=T('Start Time'), default=val_start),
         Field('end_time', 'datetime', label=T('End Time'), default=val_end),
-        Field('proveedor', 'string', default=cuenta_condition, label=T('Account')),
+        Field('cliente', label=T('Customer'), default=cliente_condition, requires=IS_IN_SET(customers)),
+        Field('cuenta', 'string', default=cuenta_condition, label=T('Account')),
+        Field('proveedor', 'string', default=proveedor_condition, label=T('Provider')),
         Field('vendedor', label=T('Seller'), default=vendedor_condition, requires=IS_IN_SET(sellers)),
         Field('call_state', default=state_condicion, label=T('State'),
               requires=IS_IN_SET(calling_status)),
@@ -190,13 +218,14 @@ def providers_channels():
     if form.process().accepted:
         val_start = form.vars.start_time
         val_end = form.vars.end_time
+        cliente_condition = form.vars.cliente
+        cuenta_condition = form.vars.cuenta
+        proveedor_condition = form.vars.proveedor
         vendedor_condition = form.vars.vendedor
-        cuenta_condition = form.vars.proveedor
-    current_channels = graphics_provider_channels(
-        val_start, val_end, 1, vendedor_condition,
-        cuenta_condition, state_condicion)
-    return dict(form=form, current_channels=current_channels)
-
+    current_channels, time_headers = graphics_provider_channels(
+        val_start, val_end, 1, cliente_condition,
+        vendedor_condition, cuenta_condition, state_condicion, proveedor_condition)
+    return dict(form=form, current_channels=current_channels, time_headers=time_headers)
 
 
 @auth.requires_login()

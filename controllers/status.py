@@ -178,7 +178,8 @@ def credits():
                             db.customers_credits.customer_amount,
                             db.customers_credits.notes,
                             db.customers_credits.status,
-                        ]
+                        ],
+                        orderby=~db.customers_credits.register_time
                         # exportclasses=dict(xml=False, html=False, json=False, tsv=False,
                         #          tsv_with_hidden_cols=False),
                         )

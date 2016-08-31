@@ -1,8 +1,6 @@
 {{extend 'new_layout.html'}}
 {{
 import random
-pie_headers = [n[0] for n in current_channels]
-pie_data = [n[1] for n in current_channels]
 color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_channels]
 }}
 <div class="right_col" role="main">
@@ -18,7 +16,9 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                     <td>Estado: {{=form.custom.widget.call_state}}</td>
                 </tr>
                 <tr>
-                    <td>Cliente: {{=form.custom.widget.proveedor}}</td>
+                    <td>Cliente: {{=form.custom.widget.cliente}}</td>
+                    <td>Cuenta: {{=form.custom.widget.cuenta}}</td>
+                    <td>Proveedor: {{=form.custom.widget.proveedor}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -44,7 +44,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
     </div>
 </div>
 
-        <script src="{{=URL('static','js/moment.min.js')}}"></script>
+<script src="{{=URL('static','js/moment.min.js')}}"></script>
 <script src="{{=URL('static','vendors/Chart.js/dist/Chart.min.js')}}"></script>
 <script>
     Chart.defaults.global.legend = {
@@ -53,15 +53,26 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
     // PolarArea chart
     var ctx = document.getElementById("polarArea");
     var data = {
-        datasets: [{
-            data: {{=XML(pie_data)}},
-            backgroundColor: "rgba(0, 157, 224, 0.4)",
-            //backgroundColor: "#009DE0",
-            pointBorderColor: "rgba(26, 26, 26, 0.4)",
-            //pointBackgroundColor: "#1A1A1A",
-            label: 'Channels'
-        }],
-        labels: {{=XML(pie_headers)}},
+//        datasets: [{
+//            backgroundColor: "rgba(0, 157, 224, 0.4)",
+//            pointRadius: 0,
+//            //backgroundColor: "#009DE0",
+//            //pointBorderColor: "rgba(26, 26, 26, 0.4)",
+//            //pointBackgroundColor: "#1A1A1A",
+//            label: 'Channels'
+//        }],
+        datasets: [
+    {{for provider in current_channels:}}
+                {
+            data: {{=XML(current_channels[provider])}},
+            label: '{{=provider}}',
+                    pointRadius: 0,
+                    backgroundColor: "rgba(0, {{=random.randint(0,255)}}, {{=random.randint(0,255)}}, 0.4)",
+        },
+    {{pass}}
+
+        ],
+        labels: {{=XML(time_headers)}},
     };
 
     var polarArea = new Chart(ctx, {
@@ -76,45 +87,22 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                     }
                 }],
                 xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Times'
+//                    scaleLabel: {
+//                        display: true,
+//                        labelString: 'Times'
+//                    },
+                    ticks: {
+                        maxTicksLimit: 24
                     },
-                    ticks:{
-                        maxTicksLimit: 2
+//                    type: 'time',
+                    time: {
+                        unit: 'hour',
+                        displayFormats: {
+                            hour: 'h'
+                        }
                     }
-//                type: 'time',
-//                time: {
-//                    displayFormats: {
-//                        hour: 'h'
-//                    }
-//                }
-
-
                 }]
             },
-//            legend: {
-//                display: true,
-////                labels: {
-////                    fontColor: 'rgb(255, 99, 132)'
-////                }
-//            }
-
-//            scales: {
-//                ticks: {
-//                    beginAtZero: true
-//                }
-//            },
-//            title: {
-//                display: false,
-//                text: 'Custom Chart Title'
-//            },
-//            legend: {
-//                display: false,
-//                labels: {
-//                    fontColor: 'rgb(255, 99, 132)'
-//                }
-//            }
         }
     });
 </script>
