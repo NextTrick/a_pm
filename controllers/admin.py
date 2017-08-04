@@ -764,7 +764,7 @@ def admin_reports():
             query_str += '"*" ip_number, '
         if customer:
             query_str += 'acc.login cliente, '
-            query_str += 'case acc.invoice_type when 0 then "Postpago" when 1 then "Prepago" end invoicetype, '
+            query_str += 'case acc.invoice_type when 0 then "Postpago" when 1 then "Prepago" end invoicetype, '            
             query_str += 'case acc.id_currency when 1 then "$" else "S/." end moneda, '
             query_str += 'ifnull(acc.tax_id,0) igv, '
         else:

@@ -13,8 +13,6 @@ def data_voip(customer_service):
             db.services_configurations.customer_service == customer_service).service_server
     except:
         return [None] * 8
-    # server_id = db.services_servers(db.services_servers.id==server).alternate_name
-    # sip_proxy = db.services_servers(db.services_servers.id==server).host_ip
     query = """select * from accounts where login='%s' and server_id='%s'""" % (
         login, server)
     data = db2.executesql(query)
@@ -23,13 +21,6 @@ def data_voip(customer_service):
         account_definition = []
         for col in row:
             account_definition.append(col)
-            #    account_definition[customer_service] = tmp
-            # +-----------+-----------------+-----------+-------------+-----------+---------------+-------+------+-------------+
-            # | server_id | login           | id_client | id_currency | id_tariff | account_state | TaxId | Type | InvoiceType |
-            # +-----------+-----------------+-----------+-------------+-----------+---------------+-------+------+-------------+
-            # |         1 | bayental_ripley |         6 |           2 |        96 |     7019.7884 | 18    |    0 |           0 |
-            # |         2 | bayental_ripley |        38 |           2 |       140 |        0.0000 | 18    |    0 |           0 |
-            # +-----------+-----------------+-----------+-------------+-----------+---------------+-------+------+-------------+
     return account_definition
 
 

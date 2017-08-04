@@ -6,31 +6,43 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <h1>Providers Channels</h1>
+            <h1 align=center style="color:black">Canales por proveedor</h1>
         {{=form.custom.begin}}
-            <table>
+          <table align=center style="color:black;line-height:0.5">
+                <tr height="30"></tr>
                 <tr>
-                    <td>Fecha Inicio: {{=form.custom.widget.start_time}}</td>
-                    <td>Fecha Fin: {{=form.custom.widget.end_time}}</td>
-                    <td>Vendedor: {{=form.custom.widget.vendedor}}</td>
-                    <td>Estado: {{=form.custom.widget.call_state}}</td>
+                    <td width="80px" height="30">Fecha Inicio:</td>
+                    <td width="160px" height="30">{{=form.custom.widget.start_time}}</td>
+                    <td width="50px" height="30">Cliente:</td>
+                    <td width="260px" height="30">{{=form.custom.widget.cliente}}</td>
+                    <td width="70px" height="30">Vendedor:</td>
+                    <td width="120px" height="30">{{=form.custom.widget.vendedor}}</td>
+                    <td width="80px" height="30">Proveedor:</td>
+                    <td width="150px" height="30">{{=form.custom.widget.proveedor}}</td>
                 </tr>
                 <tr>
-                    <td>Cliente: {{=form.custom.widget.cliente}}</td>
-                    <td>Cuenta: {{=form.custom.widget.cuenta}}</td>
-                    <td>Proveedor: {{=form.custom.widget.proveedor}}</td>
+                    <td width="80px" height="30">Fecha Fin:</td>
+                    <td width="160px" height="30">{{=form.custom.widget.end_time}}</td>
+                    <td width="50px" height="30">Cuenta:</td>
+                    <td width="260px" height="30">{{=form.custom.widget.cuenta}}</td>
+                    <td width="70px" height="30">Estado:</td>
+                    <td width="120px" height="30">{{=form.custom.widget.call_state}}</td>
+		    <td width="80px" height="30"></td>
+		    <td width="150px" height="30"></td>
                 </tr>
                 <tr>
-                    <td></td>
+		    <td height="10"></td>
+		</tr/>
+                <tr>
                     <td>{{=form.custom.submit}}</td>
                 </tr>
-            </table>
+            </table>    
         {{=form.custom.end}}
             <br/>
             <div class="col-md-10 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Channels
+                        <h2>Canales
                             <small>(Calls)</small>
                         </h2>
                         <div class="clearfix"></div>
@@ -59,7 +71,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
 //            //backgroundColor: "#009DE0",
 //            //pointBorderColor: "rgba(26, 26, 26, 0.4)",
 //            //pointBackgroundColor: "#1A1A1A",
-//            label: 'Channels'
+//            label: 'Canales'
 //        }],
         datasets: [
     {{for provider in current_channels:}}
@@ -83,7 +95,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Calls'
+                        labelString: 'Llamadas'
                     }
                 }],
                 xAxes: [{

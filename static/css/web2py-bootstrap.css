@@ -107,20 +107,20 @@ select.autocomplete {
 .background {
     background: url(../images/background.jpg) no-repeat center center;
 }
-/*body {*/
-    /*padding-top: 60px;*/
-    /*margin-bottom: 60px;*/
-/*}*/
-/*header {*/
-    /*-webkit-box-shadow: 0 0 8px 2px #000;*/
-    /*-moz-box-shadow: 0 0 8px 2px #000;*/
-    /*box-shadow: 0 0 8px 2px #000;*/
-    /*margin-bottom: 10px;*/
-/*}*/
-/*html {*/
-    /*position: relative;*/
-    /*min-height: 100%;*/
-/*}*/
+body {
+    padding-top: 60px;
+    margin-bottom: 60px;
+}
+header {
+    -webkit-box-shadow: 0 0 8px 2px #000;
+    -moz-box-shadow: 0 0 8px 2px #000;
+    box-shadow: 0 0 8px 2px #000;
+    margin-bottom: 10px;
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
 .footer {
     position: absolute;
     bottom: 0;
@@ -192,9 +192,7 @@ div.error_wrapper {
     vertical-align: middle;
     padding: 2px 5px;
 }
-.web2py_grid thead th{
-    text-align: center;
-}
+.web2py_grid thead th,
 .web2py_grid tfoot td {
     background-color: #EAEAEA;
     padding: 10px 5px;
@@ -247,7 +245,7 @@ div.error_wrapper {
 .web2py_table {
     clear: both;
     display: block;
-    font-size: 80%;    
+    margin: 1px;
 }
 .web2py_paginator {
     text-align: right;
@@ -318,9 +316,3 @@ td.w2p_fc,
 input[type=checkbox], input[type=radio] {
     margin: 4px 4px 0 0;
 }
-
-.web2py_grid .btn-default {background: #2a3f54;}
-.web2py_grid .btn-primary {background: #2a3f54;}
-/*.web2py_grid .buttontext {background: #2a3f54;}*/
-.web2py_grid .button {background: #73879c;}
-.view_title {color: #2a3f54;}

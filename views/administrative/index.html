@@ -1,5 +1,5 @@
 {{extend 'new_layout.html'}}
-<div class="right_col" role="main">
+<div align="center" class="right_col" role="main">
     <div class="">
         <div class="page-title">
             <div class="title_left">
@@ -68,11 +68,11 @@
                         <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Cuentas No Referenciadas</h2>
+                        <h2 align="center">No Referenciadas</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <table class="table table-bordered">
+                        <table align="center" class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>Servidor</th>
@@ -83,8 +83,8 @@
                             {{if len(data)>0:}}
                             {{for row in data:}}
                             <tr>
-                                <td>{{=row[0]}}</td>
-                                <td>{{=row[1]}}</td>
+                                <td align="center">{{=row[0]}}</td>
+                                <td align="center">{{=row[1]}}</td>
                             </tr>
                             {{pass}}
                             {{pass}}

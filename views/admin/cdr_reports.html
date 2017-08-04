@@ -1,70 +1,85 @@
 {{extend 'new_layout.html'}}
-        <div class="right_col" role="main">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-<h1>VOIP - CDRs</h1>
+<link href="{{=URL('static','css/pages/reportes.css')}}" rel="stylesheet">
+<link href="{{=URL('static','css/datepicker.css')}}" rel="stylesheet">
+<div align="center" class="right_col" role="main">
+<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
+<h1 align=center style="color:black">VOIP - CDRs</h1>
 {{import types}}
 
 {{=form.custom.begin}}
-<table width="100%">
+<table align=center style="color:black;line-height:0.5;width:auto">
+    <tr height="10"></tr>
     <tr>
-        <td>Cliente: {{=form.custom.widget.customer}}{{=form.custom.widget.customer_name}}</td>
-        <td width="70%">Inicio {{=form.custom.widget.from_date}}{{=form.custom.widget.from_hour}}</td>
+        <td width="80px" height="20">Cliente:</td>
+        <td width="200px" height="20">{{=form.custom.widget.customer}}{{=form.custom.widget.customer_name}}</td>
+        <td width="100px" height="20"> Fecha de inicio</td>
+        <td align=center width="300px" height="20">{{=form.custom.widget.from_date}}{{=form.custom.widget.from_hour}}</td>
     </tr>
     <tr>
-        <td>Proveedor: {{=form.custom.widget.provider}}{{=form.custom.widget.provider_name}}</td>
-        <td>Fin: {{=form.custom.widget.to_date}}{{=form.custom.widget.to_hour}}</td>
+        <td width="80px" height="20">Proveedor:</td>
+        <td width="200px" height="20">{{=form.custom.widget.provider}}{{=form.custom.widget.provider_name}}</td>
+        <td width="100px" height="20">Fecha de fin:</td>
+        <td align=center width="300px" height="20">{{=form.custom.widget.to_date}}{{=form.custom.widget.to_hour}}</td>
     </tr>
     <tr>
-        <td>No Destino {{=form.custom.widget.called_number}} Razón {{=form.custom.widget.release_reason}}</td>
-        <td>Servidor: {{=form.custom.widget.server}} {{=form.custom.widget.group}}</td>
+        <td width="80px" height="20">No Destino:</td>
+        <td width="200px" height="20">{{=form.custom.widget.called_number}}</td>
+        <td width="100px" height="20">Razón:</td>
+        <td width="300px" height="20">{{=form.custom.widget.release_reason}}</td>
+    </tr>
+    <tr height="20">
     </tr>
     <tr>
+        <td>Servidor:</td>
+        <td>{{=form.custom.widget.server}}</td>
+	<td> {{=form.custom.widget.group}}</td>
+        <td align=center height="20">{{=form.custom.submit}}</td>
     </tr>
-    <tr>
-        <td></td>
-        <td>{{=form.custom.submit}}</td>
-    </tr>
+    <tr height="20"></tr>
 </table>
 {{=form.custom.end}}
-<table border="1">
 {{if len(data)>0:}}
 {{=A(T('Download CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}
 {{pass}}
 {{if len(data)>0 and len(data)<100:}}
-<tr>
+        <div style="margin=auto;align=center">
+<table border="1" class="table2 table-bordered table-striped">
+<tr align="center">
 {{if customer:}}
-    <td>Login</td>
+    <td align="center" style="font-size:80%">Login</td>
 {{pass}}
 {{if provider:}}
-    <td>Provider</td>
+    <td align="center" noWrap style="font-size:80%">Provider</td>
 {{pass}}
-    <td>Caller ID</td>
-    <td>Called Number</td>
-    <td>Call Start</td>
+    <td align="center" style="font-size:80%">Caller ID</td>
+    <td align="center" style="font-size:80%">Called Number</td>
+    <td align="center" noWrap width="120px" style="font-size:80%">Call Start</td>
 {{if group == '0':}}
-    <td>Call End</td>
-    <td>Duration</td>
-    <td>Rate</td>
-    <td>Cost</td>
+    <td align="center" noWrap width="120px" style="font-size:80%">Call End</td>
+    <td align="center" style="font-size:80%">Duration</td>
+    <td align="center" width="40px" style="font-size:80%">Rate</td>
+    <td align="center" width="40px" style="font-size:80%">Cost</td>
 {{pass}}
 {{if group == '1':}}
-    <td>Release Reason</td>
+    <td align="center" style="font-size:80%">Release Reason</td>
 {{pass}}
-    <td>Destination</td>
-    <td>IP</td>
-    <td>SIP Proxy</td>
+    <td align="center" noWrap width="160px" style="font-size:80%">Destination</td>
+    <td align="center" style="font-size:80%">IP</td>
+    <td align="center" noWrap width="100px" style="font-size:80%">SIP Proxy</td>
 </tr>
 
 {{for line in data:}}
 <tr>
     {{for row in line:}}
-    <td>{{=row}}</td>
+    <td align="center" noWrap style="font-size:80%">{{=row}}</td>
     {{pass}}
 {{pass}}
 </tr>
 {{pass}}
 </table>
-                                </div>
+	</div>
+    </div>
+    </div>
     </div>
 </div>

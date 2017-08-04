@@ -74,7 +74,7 @@ providers = [
      [
          (T('Control Panel'), False, URL('providers', 'provider'),[]),
 #         (T('Costs List'), False, URL('providers', 'price_list'),[]),
-         (T('Contracts'), False, URL('providers', 'contract'),[]),
+#         (T('Contracts'), False, URL('providers', 'contract'),[]),
      ]
     ),
 ]

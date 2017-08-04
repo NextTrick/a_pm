@@ -37,9 +37,10 @@ def registered_users():
     form_grid = SQLFORM.grid(query,
                         editable=False, deletable=False,
                         create=False, details=False,
-                        paginate=50,
+                        paginate=25,
                         fields=[db.registered_users.login_account,
-                                db.registered_users.registration_time,db.registered_users.location_server_ip_address,
+                                db.registered_users.registration_time,
+                                db.registered_users.ip_address,
                                 db.registered_users.server_id
                                 ])
     return dict(form=form_grid, title=title)

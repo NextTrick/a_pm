@@ -69,7 +69,6 @@
                     <li><a href="{{=URL('customers','contract')}}">{{=T('Customers Contracts')}}</a></li>
                     <li><a href="{{=URL('setup','service')}}">{{=T('Services')}}</a></li>
                     <li><a href="{{=URL('providers','manage')}}">{{=T('Providers')}}</a></li>
-                    <li><a href="{{=URL('providers','contracts')}}">{{=T('Providers Contracts')}}</a></li>
                 {{pass}}
                 {{if auth.has_membership(role='sales'):}}
                     <li><a href="{{=URL('customers','manage_limited')}}">{{=T('Customers')}}</a></li>

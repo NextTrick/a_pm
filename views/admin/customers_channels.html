@@ -5,34 +5,41 @@ pie_headers = [n[0] for n in current_channels]
 pie_data = [n[1] for n in current_channels]
 color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_channels]
 }}
-<div class="right_col" role="main">
+<div align="center"  class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <h1>Customers Channels</h1>
+            <h1 align="center" style="color:black">Canales por cliente</h1>
         {{=form.custom.begin}}
-            <table>
+            <table align=center style="color:black;line-height:0.5">
+    		<tr height="30"></tr>
                 <tr>
-                    <td>Fecha Inicio: {{=form.custom.widget.start_time}}</td>
-                    <td>Fecha Fin: {{=form.custom.widget.end_time}}</td>
-                    <td>Vendedor: {{=form.custom.widget.vendedor}}</td>
-                    <td>Estado: {{=form.custom.widget.call_state}}</td>
+                    <td width="80px" height="30">Fecha Inicio:</td>
+		    <td width="180px" height="30">{{=form.custom.widget.start_time}}</td>
+                    <td width="50px" height="30">Cliente:</td>
+                    <td width="300px" height="30">{{=form.custom.widget.cliente}}</td>
+		    <td width="80px" height="30">Vendedor:</td>
+                    <td width="80px" height="30">{{=form.custom.widget.vendedor}}</td>
                 </tr>
                 <tr>
-                    <td>Cliente: {{=form.custom.widget.cliente}}</td>
-                    <td>Cuenta: {{=form.custom.widget.cuenta}}</td>
+                    <td width="80px" height="30">Fecha Fin:</td>
+                    <td width="180px" height="30">{{=form.custom.widget.end_time}}</td>
+                    <td width="50px" height="30">Cuenta:</td>
+                    <td width="300px" height="30">{{=form.custom.widget.cuenta}}</td>
+                    <td width="80px" height="30">Estado:</td>
+                    <td width="80px" height="30">{{=form.custom.widget.call_state}}</td>
                 </tr>
-                <tr>
-                    <td></td>
+                <tr height="30"></tr>
+		<tr>
                     <td>{{=form.custom.submit}}</td>
                 </tr>
             </table>
         {{=form.custom.end}}
             <br/>
-            <div class="col-md-10 col-sm-12 col-xs-12">
-                <div class="x_panel">
+            <div  class="col-md-10 col-sm-12 col-xs-12">
+                <div align="center"  class="x_panel">
                     <div class="x_title">
-                        <h2>Channels
-                            <small>(Calls)</small>
+                        <h2>Canales
+                            <small>(Llamadas)</small>
                         </h2>
                         <div class="clearfix"></div>
                     </div>
@@ -63,7 +70,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
             //backgroundColor: "#009DE0",
             //pointBorderColor: "rgba(26, 26, 26, 0.4)",
             //pointBackgroundColor: "#1A1A1A",
-            label: 'Channels'
+            label: 'Canales'
         }],
         labels: {{=XML(pie_headers)}},
     };
@@ -76,7 +83,7 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Calls'
+                        labelString: 'Llamadas'
                     }
                 }],
                 xAxes: [{
@@ -121,3 +128,4 @@ color_data =['#{:06x}'.format(random.randint(0, 0xffffff)) for n in current_chan
         }
     });
 </script>
+

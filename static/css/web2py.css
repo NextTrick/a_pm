@@ -3,7 +3,7 @@ a {text-decoration:none; white-space:nowrap}
 a:hover {text-decoration:underline}
 a.button {text-decoration:none}
 h1,h2,h3,h4,h5,h6 {margin:0.5em 0 0.25em 0; display:block;
-  font-family:Helvetica}
+  font-family:verdana}
 h1 {font-size:4.00em}
 h2 {font-size:3.00em}
 h3 {font-size:2.00em}
@@ -11,10 +11,10 @@ h4 {font-size:1.50em}
 h5 {font-size:1.25em}
 h6 {font-size:1.12em}
 th,label {font-weight:bold; white-space:nowrap;}
-td,th {text-align:left; padding:2px 5px 2px 5px}
+td,th {text-align:center; padding:2px 5px 2px 5px;}
 th {vertical-align:middle; border-right:1px solid white}
 td {vertical-align:top}
-form table tr td label {text-align:left}
+form table tr td label {text-align:center}
 p,table,ol,ul {padding:0; margin: 0.75em 0}
 p {text-align:justify}
 ol, ul {list-style-position:outside; margin-left:2em}
@@ -183,7 +183,16 @@ div.error {
 /* .web2py_table {border:1px solid #ccc} */
 .web2py_paginator {}
 .web2py_grid {width:100%}
-.web2py_grid table {width:100%}
+.web2py_grid table {
+	width:100%;
+	font-size:80%;
+        text-align:center;
+}
+.web2py_grid div {
+        width:100%;
+        font-size=80%;
+}
+.web2py_grid td {width:100%}
 .web2py_grid tbody td {padding:2px 5px 2px 5px; vertical-align: middle;}
 .web2py_grid .web2py_form td {vertical-align: top;}
 
@@ -214,7 +223,8 @@ div.error {
 .web2py_console form {
     width: 100%;
     display: inline;
-    vertical-align: middle;
+    vertical-align: center;
+    text-align: center;
     margin: 0 0 0 5px;
 }
 
@@ -224,12 +234,13 @@ div.error {
 
 .web2py_search_actions {
     float:left;
-    text-align:left;
+    text-align:center;
 }
 
 .web2py_grid .row_buttons {
     min-height:25px;
     vertical-align:middle;
+    text-align:center;
 }
 .web2py_grid .row_buttons a {
     margin:3px;

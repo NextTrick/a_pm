@@ -1,4 +1,7 @@
 {{extend 'new_layout.html'}}
+<link href="{{=URL('static','css/pages/reportes.css')}}" rel="stylesheet">
+<link href="{{=URL('static','css/datepicker.css')}}" rel="stylesheet">
+
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -61,7 +64,8 @@
         var options = {
           title: 'Llamadas',
           series: [{color: 'blue', lineWidth: 1}, {color: 'orange', lineWidth: 1}, {color: 'red', lineWidth: 1}],
-          vAxis: {minValue: 0}
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
+	  vAxis: {minValue: 0}
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('llamadas'));
@@ -74,6 +78,7 @@
 
         var options = {
           title: 'Ganancia',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
           vAxis: {minValue: 0}
         };
 
@@ -87,6 +92,7 @@
 
         var options = {
           title: 'Rentabilidad',
+          hAxis: {title: 'Fecha', titleTextStyle: {color: 'red'}},
           vAxis: {minValue: 0}
         };
 
@@ -94,51 +100,56 @@
         chart.draw(data, options);
       }
     </script>
-<h1>Graficos</h1>
+<h1 align=center style="color:black">Graficos</h1>
 {{=form.custom.begin}}
-<table>
-    <tr>
-        <td>Fecha Inicio: {{=form.custom.widget.start_time}}</td>
-        <td>Fecha Fin: {{=form.custom.widget.end_time}}</td>
-        <td>Vendedor: {{=form.custom.widget.vendedor}}</td>
+<table align=center style="color:black;line-height:0.5">
+    <tr height="30"></tr>
+    <tr align=center>
+        <td width="80px" height="30">Fecha Inicio:</td>
+        <td width="180px" height="30">{{=form.custom.widget.start_time}}</td>
+	<td width="50px" height="30">Cliente:</td>
+        <td width="250px" height="30">{{=form.custom.widget.cliente}}</td>
+	<td width="50px" height="30">Vendedor:</td>
+        <td width="120px" height="30">{{=form.custom.widget.vendedor}}</td>
+
     </tr>
+    <tr align=center>
+        <td width="80px" height="30">Fecha Fin:</td>
+        <td width="180px" height="30">{{=form.custom.widget.end_time}}</td>
+	<td width="50px" height="30">Cuenta:</td>
+        <td width="250px" height="30">{{=form.custom.widget.cuenta}}</td>
+	<td width="120px" height="30" align="center">{{=form.custom.submit}}</td>
+	<td></td>
     <tr>
-        <td>Cliente: {{=form.custom.widget.cliente}}</td>
-        <td>Cuenta: {{=form.custom.widget.cuenta}}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>{{=form.custom.submit}}</td>
-    </tr>
+    <tr height="30"></tr>
 </table>
 {{=form.custom.end}}
-
-<table>
+<table align=center>
 <tr>
-    <td>
-        <div id="costo" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="costo" style="width: 500px; height: 300px;"></div>
     </td>
-    <td>
-        <div id="consumo" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="consumo" style="width: 500px; height: 300px;"></div>
     </td>
 </tr>
 <tr>
-    <td>
-        <div id="minutos" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="minutos" style="width: 500px; height: 300px;"></div>
     </td>
-    <td>
-        <div id="llamadas" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="llamadas" style="width: 500px; height: 300px;"></div>
     </td>
 </tr>
 <tr>
-    <td>
-        <div id="ganancia" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="ganancia" style="width: 500px; height: 300px;"></div>
     </td>
-    <td>
-        <div id="rentabilidad" style="width: 400px; height: 300px;"></div>
+    <td align=center>
+        <div id="rentabilidad" style="width: 500px; height: 300px;"></div>
     </td>
 </tr>
 </table>
-                    </div>
-    </div>
+</div>
+</div>
 </div>

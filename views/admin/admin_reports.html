@@ -1,40 +1,40 @@
 {{extend 'new_layout.html'}}
-                <div class="right_col" role="main">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+<link href="{{=URL('static','css/pages/reportes.css')}}" rel="stylesheet">
+<link href="{{=URL('static','css/datepicker.css')}}" rel="stylesheet">
+<div align="center" class="right_col" role="main">
+<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
 {{import decimal}}
-<h1>VOIP - Reporte Administrativo</h1>
+<h1 align=center style="color:black">VOIP - Reporte Administrativo</h1>
 {{=form.custom.begin}}
-<table width="100%">
+<table align="center" style="color:black;line-height:0.5;width:auto">
+    <tr height="10"></tr>
     <tr>
-        <td style="text-align:right;width: 50px">Cliente: {{=form.custom.widget.customer}}</td>
-        <td style="text-align:right;width: 50px">{{=form.custom.widget.customer_name}}</td>
-        <td style="text-align:right;width: 50px">Inicio {{=form.custom.widget.from_date}}</td>
-        <td style="text-align:right;width: 50px">{{=form.custom.widget.from_hour}}</td>
-
+        <td style="text-align:right;width: 50px; height:20">Cliente:</td>
+        <td style="text-align:center;width: 180px ; height:20">{{=form.custom.widget.customer}} {{=form.custom.widget.customer_name}}</td>
+        <td style="text-align:right;width: 100px; height:20">Fecha de inicio:</td>
+        <td style="text-align:center;width: 300px; height:20">{{=form.custom.widget.from_date}}{{=form.custom.widget.from_hour}}</td>
+        <td style="text-align:right;width: 80px; height:20">Fecha de fin:</td>
+        <td style="text-align:center;width: 300px; height:20">{{=form.custom.widget.to_date}}{{=form.custom.widget.to_hour}}</td>
     </tr>
     <tr>
-        <td style="text-align:right;width: 50px">Proveedor: {{=form.custom.widget.provider}}</td>
-        <td style="text-align:right;width: 50px">{{=form.custom.widget.provider_name}}</td>
-        <td style="text-align:right;width: 50px">Fin: {{=form.custom.widget.to_date}}</td>
-        <td style="text-align:right;width: 50px">{{=form.custom.widget.to_hour}}</td>
-
+        <td style="text-align:right;width: 50px; height:20">Proveedor:</td>
+        <td style="text-align:center;width: 180px; height:20">{{=form.custom.widget.provider}}{{=form.custom.widget.provider_name}}</td>
+        <td style="text-align:right;width: 100px; height:20">Destino:</td>
+        <td style="text-align:center;width: 300px; height:20">{{=form.custom.widget.destination}}{{=form.custom.widget.destination_name}}</td>
+	<td style="text-align:right;width: 80px; height:20">Servidor</td>
+        <td style="text-align:center;width: 300px; height:20">{{=form.custom.widget.server}}</td>
     </tr>
+    <tr height="20"></tr>
     <tr>
-        <td style="text-align:right;width: 50px">Destino: {{=form.custom.widget.destination}}</td>
-        <td style="text-align:right;width: 50px">{{=form.custom.widget.destination_name}}</td>
+	<td style="text-align:right;width: 50px">Agrupamiento</td>
+	<td align="center" style="width: 180px">{{=form.custom.widget.group}}</td>	
+	<td></td>
+        <td style="text-align:center;width: 300px">IP{{=form.custom.widget.ip_number}} Origen{{=form.custom.widget.origin}} Prefijo{{=form.custom.widget.prefix}}</td>
+	<td></td>
+        <td align="center">{{=form.custom.submit}}</td>
     </tr>
-    <tr>
-        <td style="text-align:right;width: 50px">Servidor {{=form.custom.widget.server}}</td>
-        <td style="text-align:right;width: 50px">Agrupamiento {{=form.custom.widget.group}}</td>
-        <td style="text-align:right;width: 50px">IP{{=form.custom.widget.ip_number}} Origen{{=form.custom.widget.origin}} Prefijo{{=form.custom.widget.prefix}}</td>
-    </tr>
-    <tr>
-    </tr>
-    <tr>
-        <td></td>
-        <td>{{=form.custom.submit}}</td>
-    </tr>
+    <tr height="30"></tr>
 </table>
 {{=form.custom.end}}
 {{
@@ -54,52 +54,53 @@ total_ganancia = decimal.Decimal(0)
 total_rentabilidad = decimal.Decimal(0)
 }}
 {{if len(data)>0:}}
-{{=A(T('Download CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}
+{{=A(T('Descargar CSV'), _href=URL('get_csv', vars=dict(file_name=csv_path)))}}
 {{pass}}
 {{if len(data)>0 and len(data)<100:}}
-<table border="1">
+
+<table border="1" class="table2 table-bordered table-striped">
     <tr>
-        <td>Fecha/Hora</td>
+        <td align="center" style="font-size:80%">Fecha/Hora</td>
 {{if customer:}}
-        <td>Cliente</td>
-        <td>Tipo</td>
-        <td>Moneda</td>
-        <td>Impuesto</td>
+        <td align="center" style="font-size:80%">Cliente</td>
+        <td align="center" style="font-size:80%">Tipo</td>
+        <td align="center" style="font-size:80%">Moneda</td>
+        <td align="center" style="font-size:80%">Impuesto</td>
 {{pass}}
 {{if provider:}}
-        <td>Proveedor</td>
+        <td align="center" style="font-size:80%">Proveedor</td>
 {{pass}}
-        <td>Intentos</td>
-        <td>Completados</td>
-        <td>Fallados</td>
-        <td>Minutos</td>
+        <td align="center" style="font-size:80%">Intentos</td>
+        <td align="center" style="font-size:80%">Completados</td>
+        <td align="center" style="font-size:80%">Fallados</td>
+        <td align="center" style="font-size:80%">Minutos</td>
 {{if ip_number:}}
-        <td>IP</td>
+        <td align="center" style="font-size:80%">IP</td>
 {{pass}}
 {{if origin:}}
-        <td>Origen</td>
+        <td align="center" style="font-size:80%">Origen</td>
 {{pass}}
 {{if prefix:}}
-        <td>Prefijo</td>
+        <td align="center" style="font-size:80%">Prefijo</td>
 {{pass}}
 {{if destination:}}
-        <td>Destino</td>
+        <td align="center" style="font-size:80%">Destino</td>
 {{pass}}
-        <td>ASR</td>
-        <td>ACD</td>
-        <td>PDD</td>
-        <td>CS_IGV</td>
-        <td>CS_SIGV</td>
-        <td>CD_IGV</td>
-        <td>CD_SIGV</td>
-        <td>Costo</td>
-        <td>Ganancia</td>
-        <td>Rentabilidad</td>
+        <td align="center" style="font-size:80%">ASR</td>
+        <td align="center" style="font-size:80%">ACD</td>
+        <td align="center" style="font-size:80%">PDD</td>
+        <td align="center" style="font-size:80%">CS_IGV</td>
+        <td align="center" style="font-size:80%">CS_SIGV</td>
+        <td align="center" style="font-size:80%">CD_IGV</td>
+        <td align="center" style="font-size:80%">CD_SIGV</td>
+        <td align="center" style="font-size:80%">Costo</td>
+        <td align="center" style="font-size:80%">Ganancia</td>
+        <td align="center" style="font-size:80%">Rentabilidad</td>
     </tr>
 {{for line in data:}}
 <tr>
 {{for row in line:}}
-    <td>{{=row}}</td>
+    <td align="center" style="font-size:80%">{{=row}}</td>
 {{pass}}
 {{
 if customer:
@@ -138,31 +139,31 @@ total_costo += decimal.Decimal(line[-3])
 </tr>
 {{pass}}
     <tr>
-        <td></td>
+        <td style="text-align:center"></td>
 {{if customer:}}
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
 {{pass}}
 {{if provider:}}
-        <td></td>
+        <td style="text-align:center"></td>
 {{pass}}
-        <td>{{=total_calls}}</td>
-        <td>{{=total_completed}}</td>
-        <td>{{=total_failed}}</td>
-        <td>{{=total_minutes}}</td>
+        <td style="text-align:center">{{=total_calls}}</td>
+        <td style="text-align:center">{{=total_completed}}</td>
+        <td style="text-align:center">{{=total_failed}}</td>
+        <td style="text-align:center">{{=total_minutes}}</td>
 {{if ip_number:}}
-        <td></td>
+        <td style="text-align:center"></td>
 {{pass}}
 {{if origin:}}
-        <td></td>
+        <td style="text-align:center"></td>
 {{pass}}
 {{if prefix:}}
-        <td></td>
+        <td style="text-align:center"></td>
 {{pass}}
 {{if destination:}}
-        <td></td>
+        <td style="text-align:center"></td>
 {{pass}}
 {{
 total_asr = round(decimal.Decimal(100) * total_completed/(total_completed+total_failed),2)
@@ -171,16 +172,16 @@ total_pdd = 0
 total_ganancia = round(total_cds_igv - total_costo,2)
 total_rentabilidad =  round((total_cds_igv - total_costo) / total_costo * decimal.Decimal(100), 2)
 }}
-        <td>{{=total_asr}}</td>
-        <td>{{=total_acd}}</td>
-        <td>{{=total_pdd}}</td>
-        <td>{{=total_cs_igv}}</td>
-        <td>{{=total_css_igv}}</td>
-        <td>{{=total_cd_igv}}</td>
-        <td>{{=total_cds_igv}}</td>
-        <td>{{=total_costo}}</td>
-        <td>{{=total_ganancia}}</td>
-        <td>{{=total_rentabilidad}}</td>
+        <td style="text-align:center">{{=total_asr}}</td>
+        <td style="text-align:center">{{=total_acd}}</td>
+        <td style="text-align:center">{{=total_pdd}}</td>
+        <td style="text-align:center">{{=total_cs_igv}}</td>
+        <td style="text-align:center">{{=total_css_igv}}</td>
+        <td style="text-align:center">{{=total_cd_igv}}</td>
+        <td style="text-align:center">{{=total_cds_igv}}</td>
+        <td style="text-align:center">{{=total_costo}}</td>
+        <td style="text-align:center">{{=total_ganancia}}</td>
+        <td style="text-align:center">{{=total_rentabilidad}}</td>
     </tr>
 </table>
 {{pass}}
